@@ -1,9 +1,57 @@
-<mxfile host="app.diagrams.net" modified="2023-10-05T23:50:16.549Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" version="22.0.3" etag="nR6PcBvpWFZ6bvJPjN95" type="github">
+<mxfile host="app.diagrams.net" modified="2023-10-06T00:20:04.053Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="tJE7ApkwwbBjsZ6nTpyf" version="22.0.3" type="github">
   <diagram name="Page-1" id="H6BJaqwLvzDeXy_wgXIR">
-    <mxGraphModel>
+    <mxGraphModel dx="700" dy="768" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="IhGeRjvuqPSNiVyppIky-6" value="Estoque" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="350" width="290" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="IhGeRjvuqPSNiVyppIky-7" value="- produtos: &amp;lt;List&amp;gt; Produto" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="IhGeRjvuqPSNiVyppIky-6">
+          <mxGeometry y="26" width="290" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="IhGeRjvuqPSNiVyppIky-8" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="IhGeRjvuqPSNiVyppIky-6">
+          <mxGeometry y="52" width="290" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="IhGeRjvuqPSNiVyppIky-9" value="&lt;div&gt;+ getters ()&lt;/div&gt;+ setters ()&lt;div&gt;+ adicionarProduto(Produto, int):void&lt;/div&gt;&lt;div&gt;+ removerProduto(Produto, int):void&lt;/div&gt;&lt;div&gt;+ atualizarProduto(Produto):int&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="IhGeRjvuqPSNiVyppIky-6">
+          <mxGeometry y="60" width="290" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="IhGeRjvuqPSNiVyppIky-10" value="Produto" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="580" width="180" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="IhGeRjvuqPSNiVyppIky-11" value="&lt;div&gt;- nome: Majestic Sea&lt;br&gt;&lt;/div&gt;&lt;div&gt;- quantidade: 10&lt;br&gt;&lt;/div&gt;&lt;div&gt;- preco: 1,500,000&lt;br&gt;&lt;/div&gt;&lt;div&gt;- fabricante: Voyager Yachts&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="IhGeRjvuqPSNiVyppIky-10">
+          <mxGeometry y="26" width="180" height="74" as="geometry" />
+        </mxCell>
+        <mxCell id="IhGeRjvuqPSNiVyppIky-12" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="IhGeRjvuqPSNiVyppIky-10">
+          <mxGeometry y="100" width="180" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="IhGeRjvuqPSNiVyppIky-13" value="&lt;div&gt;+ getters ()&lt;/div&gt;&lt;div&gt;+ setters ()&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="IhGeRjvuqPSNiVyppIky-10">
+          <mxGeometry y="108" width="180" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="IhGeRjvuqPSNiVyppIky-14" value="Produto" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="580" width="190" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="IhGeRjvuqPSNiVyppIky-15" value="&lt;div&gt;- nome:Sunrise Explorer&lt;br&gt;&lt;/div&gt;&lt;div&gt;- quantidade: 2&lt;br&gt;&lt;/div&gt;&lt;div&gt;- preco: 2,200,000&lt;br&gt;&lt;/div&gt;&lt;div&gt;- categoria: Horizon Yachts&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="IhGeRjvuqPSNiVyppIky-14">
+          <mxGeometry y="26" width="190" height="74" as="geometry" />
+        </mxCell>
+        <mxCell id="IhGeRjvuqPSNiVyppIky-16" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="IhGeRjvuqPSNiVyppIky-14">
+          <mxGeometry y="100" width="190" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="IhGeRjvuqPSNiVyppIky-17" value="&lt;div&gt;+ getters ()&lt;/div&gt;&lt;div&gt;+ setters ()&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="IhGeRjvuqPSNiVyppIky-14">
+          <mxGeometry y="108" width="190" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="IhGeRjvuqPSNiVyppIky-18" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="IhGeRjvuqPSNiVyppIky-10" target="IhGeRjvuqPSNiVyppIky-9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="470" y="710" as="sourcePoint" />
+            <mxPoint x="520" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IhGeRjvuqPSNiVyppIky-19" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="IhGeRjvuqPSNiVyppIky-14" target="IhGeRjvuqPSNiVyppIky-9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="360" y="590" as="sourcePoint" />
+            <mxPoint x="453" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
