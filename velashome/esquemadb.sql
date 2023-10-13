@@ -49,6 +49,8 @@ END; $$ LANGUAGE plpgsql;
     CREATE TABLE Auditoria (
         id SERIAL PRIMARY KEY,
         produto_id INTEGER,
+        produto_nome VARCHAR(255),
+        data_hora TIMESTAMP DEFAULT NOW(),
         acao BOOLEAN
     );
 
@@ -106,9 +108,9 @@ END; $$ LANGUAGE plpgsql;
     CREATE OR REPLACE FUNCTION registrar_alteracao_estoque() RETURNS TRIGGER AS $$
     BEGIN
         IF TG_OP = 'INSERT' THEN
-            INSERT INTO Auditoria (produto_id, acao) VALUES (NEW.produto_id, TRUE);
+            INSERT INTO Auditoria (produto_id, produto_nome, data_hora, acao) VALUES (NEW.produto_id, NEW.produto_nome, DEFAULT, TRUE);
         ELSIF TG_OP = 'DELETE' THEN
-            INSERT INTO Auditoria (produto_id, acao) VALUES (OLD.produto_id, FALSE);
+            INSERT INTO Auditoria (produto_id, produto_nome, data_hora, acao) VALUES (OLD.produto_id, OLD.produto_nome, DEFAULT, TRUE);
         END IF;
         RETURN NULL;
     END; $$ LANGUAGE plpgsql;
@@ -158,4 +160,3 @@ END; $$ LANGUAGE plpgsql;
     
     -- Trigger para guardar alterações no estoque
     CREATE TRIGGER trigger_alteracao_estoque AFTER INSERT OR DELETE ON Estoque FOR EACH ROW EXECUTE FUNCTION registrar_alteracao_estoque();
-
