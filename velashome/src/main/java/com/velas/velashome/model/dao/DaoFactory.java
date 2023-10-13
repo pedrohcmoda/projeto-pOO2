@@ -1,23 +1,17 @@
 package com.velas.velashome.model.dao;
 
 import com.velas.velashome.db.DB;
-
-import com.velas.velashome.model.dao.implementation.ProdutoDaoJDBC;
-import com.velas.velashome.model.dao.implementation.EstoqueDaoJDBC;
 import com.velas.velashome.model.dao.implementation.GerenteDaoJDBC;
+import com.velas.velashome.model.dao.implementation.Produto_EstoqueDaoJDBC;
 import com.velas.velashome.model.dao.implementation.AuditoriaDaoJDBC;
 import com.velas.velashome.model.dao.implementation.ClienteDaoJDBC;
 import com.velas.velashome.model.dao.implementation.TransportadoraDaoJDBC;
-import com.velas.velashome.model.dao.implementation.VendaDaoJDBC;
+import com.velas.velashome.model.dao.implementation.Venda_ProdutoDaoJDBC;
 
 public class DaoFactory {
 
-    public static ProdutoDao createProdutoDao() throws ClassNotFoundException {
-        return new ProdutoDaoJDBC(DB.getConnection());
-    }
-
-    public static EstoqueDao createEstoqueDao() throws ClassNotFoundException {
-        return new EstoqueDaoJDBC(DB.getConnection());
+    public static Produto_EstoqueDao createProdutoDao() throws ClassNotFoundException {
+        return new Produto_EstoqueDaoJDBC(DB.getConnection());
     }
 
     public static GerenteDao createGerenteDao() throws ClassNotFoundException {
@@ -36,7 +30,7 @@ public class DaoFactory {
         return new TransportadoraDaoJDBC(DB.getConnection());
     }
 
-    public static VendaDao createVendaDao() throws ClassNotFoundException {
-        return new VendaDaoJDBC(DB.getConnection());
+    public static Venda_ProdutoDao createVendaDao() throws ClassNotFoundException {
+        return new Venda_ProdutoDaoJDBC(DB.getConnection());
     }
 }

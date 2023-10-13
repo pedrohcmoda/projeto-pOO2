@@ -39,6 +39,19 @@ END; $$ LANGUAGE plpgsql;
         quantidade INTEGER
     );
 
+    CREATE TABLE Produto (
+        id SERIAL PRIMARY KEY,
+        nome VARCHAR(255),
+        preco FLOAT,
+        fabricante VARCHAR(255)
+    );
+
+    CREATE TABLE Estoque (
+        id SERIAL PRIMARY KEY,
+        produto_id INTEGER REFERENCES Produto(id),
+        quantidade INTEGER
+    );
+
     CREATE TABLE Gerente (
         id SERIAL PRIMARY KEY,
         nome VARCHAR(255),
@@ -74,7 +87,7 @@ END; $$ LANGUAGE plpgsql;
         cliente_id INTEGER REFERENCES Cliente(id),
         valorTotal FLOAT,
         produto_id INT REFERENCES Produto(id),
-        data DATE DEFAULT NOW(),
+        data_hora DATE DEFAULT NOW(),
         quantidade_produto INTEGER,
         transportadora_id INTEGER REFERENCES Transportadora(id)
     );
@@ -115,6 +128,8 @@ END; $$ LANGUAGE plpgsql;
         RETURN NULL;
     END; $$ LANGUAGE plpgsql;
 
+
+-----------------------------------------MANIPULAR_PRODUTO_ESTOQUE ------------------------------------------------------------------------
     -- Função para facilitar a vida no front end e não ter que adicionar o produto e depois adicionar o produto no estoque, aqui ele ja adiciona direto no produto e depois no estoque de uma vez.
     -- Para o front end sera necessario passar as infos na ordem:
     -- nome do produto, quantidade do produto, preco e fabricante
@@ -132,6 +147,51 @@ END; $$ LANGUAGE plpgsql;
     END; $$ LANGUAGE plpgsql;
 
 
+    CREATE OR REPLACE FUNCTION atualizar_produto(nome_produto VARCHAR(255), quantidade_produto INTEGER, preco_produto FLOAT, fabricante_produto VARCHAR(255)) RETURNS VOID AS $$
+    DECLARE
+        id_prod INTEGER;
+    BEGIN
+        IF EXISTS (SELECT 1 FROM Produto WHERE nome = nome_produto) THEN
+            SELECT id INTO id_prod FROM Produto WHERE nome = nome_produto;
+            UPDATE Produto 
+            SET 
+                quantidade = quantidade_produto, 
+                preco = preco_produto, 
+                fabricante = fabricante_produto
+            WHERE id = id_prod;
+        ELSE
+            RAISE EXCEPTION 'Produto não encontrado: %', nome_produto;
+        END IF;
+    END; 
+    $$ LANGUAGE plpgsql;
+
+    CREATE OR REPLACE FUNCTION remover_produto(produto_id INTEGER) RETURNS VOID AS $$
+    BEGIN
+        IF EXISTS (SELECT 1 FROM Produto WHERE id = produto_id) THEN
+            DELETE FROM Estoque WHERE produto_id = produto_id;
+            DELETE FROM Produto WHERE id = produto_id;
+        ELSE
+            RAISE EXCEPTION 'Produto com ID % não encontrado', produto_id;
+        END IF;
+    END;
+    $$ LANGUAGE plpgsql;
+
+    CREATE VIEW estoque_completo AS
+    SELECT e.id, p.nome, e.id AS produto_id, e.quantidade, p.preco, p.fabricante
+    FROM Produto p, Estoque e
+    WHERE e.id = p.produto_id
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+        
+    CREATE VIEW venda_produto AS
+    SELECT v.id, v.cliente_id, v.valorTotal, v.produto_id, p.produto_nome, v.data, v.quantidade_produto, v.transportadora_id
+    FROM Venda v
+    JOIN Produto p ON v.produto_id = p.id;
+
+
+
     -- Função para pegar o preço final e inserir na tabela Venda
     CREATE OR REPLACE FUNCTION preco_final(quantidade_prod INTEGER, id_prod INTEGER) RETURNS FLOAT AS $$
     DECLARE
@@ -140,6 +200,7 @@ END; $$ LANGUAGE plpgsql;
         SELECT (quantidade_prod * (SELECT preco FROM Produto WHERE id = id_prod)) INTO preco_final;
         RETURN preco_final;
     END; $$ LANGUAGE plpgsql;
+
 
     -- Função para subtrair do estoque a quantidade de produtos que foi comprada
     CREATE OR REPLACE FUNCTION subtrai_quant_estoque() RETURNS TRIGGER AS $$
@@ -160,3 +221,5 @@ END; $$ LANGUAGE plpgsql;
     
     -- Trigger para guardar alterações no estoque
     CREATE TRIGGER trigger_alteracao_estoque AFTER INSERT OR DELETE ON Estoque FOR EACH ROW EXECUTE FUNCTION registrar_alteracao_estoque();
+
+

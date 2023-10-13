@@ -46,11 +46,11 @@ public class TransportadoraDaoJDBC implements TransportadoraDao {
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void deleteById(Transportadora obj) {
         PreparedStatement st = null;
         try {
             st = conn.prepareStatement("DELETE FROM transportadora WHERE id = ?");
-            st.setInt(1, id);
+            st.setInt(1, obj.getId());
 
             int rows = st.executeUpdate();
 
@@ -64,33 +64,6 @@ public class TransportadoraDaoJDBC implements TransportadoraDao {
         }
     }
 
-    @Override
-    public List<Transportadora> findAll() {
-        PreparedStatement st = null;
-        ResultSet rs = null;
-        try {
-            st = conn.prepareStatement("SELECT * FROM transportadora ORDER BY id");
-
-            rs = st.executeQuery();
-            List<Transportadora> list = new ArrayList<>();
-
-            while (rs.next()) {
-                Transportadora tr = new Transportadora();
-                tr.setId(rs.getInt("id"));
-                tr.setNome(rs.getString("nome"));
-                tr.setTelefone(rs.getString("telefone"));
-                tr.setCnpj(rs.getString("cnpj"));
-                tr.setEndereco(rs.getString("endereco"));
-                list.add(tr);
-            }
-            return list;
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
-        } finally {
-            DB.closeStatement(st);
-            DB.closeResultSet(rs);
-        }
-    }
 
     @Override
     public void update(Transportadora obj) {
@@ -110,22 +83,22 @@ public class TransportadoraDaoJDBC implements TransportadoraDao {
             DB.closeStatement(st);
         }
     }
-    
+
     @Override
-    public Transportadora findById(Integer id) {
+    public List<Transportadora> findAll() {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            st = conn.prepareStatement("SELECT * FROM transportadora WHERE id = ?");
-            st.setInt(1, id);
-    
+            st = conn.prepareStatement("SELECT * FROM transportadora ORDER BY id");
+
             rs = st.executeQuery();
-    
-            if (rs.next()) {
-                Transportadora tr = instantiateTransportadora(rs);
-                return tr;
+            List<Transportadora> list = new ArrayList<>();
+
+            while (rs.next()) {
+                Transportadora tr = pegaInfo(rs);
+                list.add(tr);
             }
-            return null;  // Se não encontrar o ID, retornar null ou lançar uma exceção
+            return list;
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {
@@ -133,9 +106,8 @@ public class TransportadoraDaoJDBC implements TransportadoraDao {
             DB.closeResultSet(rs);
         }
     }
-    
-    // Método auxiliar para criar uma instância de Transportadora a partir do ResultSet
-    private Transportadora instantiateTransportadora(ResultSet rs) throws SQLException {
+
+    private Transportadora pegaInfo(ResultSet rs) throws SQLException {
         Transportadora tr = new Transportadora();
         tr.setId(rs.getInt("id"));
         tr.setNome(rs.getString("nome"));
