@@ -10,7 +10,7 @@ import com.velas.velashome.model.dao.implementation.Venda_ProdutoDaoJDBC;
 
 public class DaoFactory {
 
-    public static Produto_EstoqueDao createProdutoDao() throws ClassNotFoundException {
+    public static Produto_EstoqueDao createProduto_EstoqueDao() throws ClassNotFoundException {
         return new Produto_EstoqueDaoJDBC(DB.getConnection());
     }
 
@@ -30,7 +30,7 @@ public class DaoFactory {
         return new TransportadoraDaoJDBC(DB.getConnection());
     }
 
-    public static Venda_ProdutoDao createVendaDao() throws ClassNotFoundException {
+    public static Venda_ProdutoDao createVenda_ProdutoDao() throws ClassNotFoundException {
         return new Venda_ProdutoDaoJDBC(DB.getConnection());
     }
 }

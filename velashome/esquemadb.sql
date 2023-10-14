@@ -25,20 +25,6 @@ END; $$ LANGUAGE plpgsql;
 
 
 
-    -- Criação das tabelas
-    CREATE TABLE Produto (
-        id SERIAL PRIMARY KEY,
-        nome VARCHAR(255),
-        preco FLOAT,
-        fabricante VARCHAR(255)
-    );
-
-    CREATE TABLE Estoque (
-        id SERIAL PRIMARY KEY,
-        produto_id INTEGER REFERENCES Produto(id),
-        quantidade INTEGER
-    );
-
     CREATE TABLE Produto (
         id SERIAL PRIMARY KEY,
         nome VARCHAR(255),
@@ -87,7 +73,7 @@ END; $$ LANGUAGE plpgsql;
         cliente_id INTEGER REFERENCES Cliente(id),
         valorTotal FLOAT,
         produto_id INT REFERENCES Produto(id),
-        data_hora DATE DEFAULT NOW(),
+        data_hora TIMESTAMP DEFAULT NOW(),
         quantidade_produto INTEGER,
         transportadora_id INTEGER REFERENCES Transportadora(id)
     );
@@ -117,23 +103,26 @@ END; $$ LANGUAGE plpgsql;
     REFERENCES Transportadora (id);
 
 
-    -- Function para registrar alterações no estoque na tabela de auditoria
-    CREATE OR REPLACE FUNCTION registrar_alteracao_estoque() RETURNS TRIGGER AS $$
-    BEGIN
-        IF TG_OP = 'INSERT' THEN
-            INSERT INTO Auditoria (produto_id, produto_nome, data_hora, acao) VALUES (NEW.produto_id, NEW.produto_nome, DEFAULT, TRUE);
-        ELSIF TG_OP = 'DELETE' THEN
-            INSERT INTO Auditoria (produto_id, produto_nome, data_hora, acao) VALUES (OLD.produto_id, OLD.produto_nome, DEFAULT, TRUE);
-        END IF;
-        RETURN NULL;
-    END; $$ LANGUAGE plpgsql;
+-- Function para registrar alterações no estoque na tabela de auditoria
+CREATE OR REPLACE FUNCTION registrar_alteracao_estoque() RETURNS TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        INSERT INTO Auditoria (produto_id, produto_nome, data_hora, acao) 
+        SELECT NEW.produto_id, p.nome, NOW(), TRUE
+        FROM Produto p
+        WHERE p.id = NEW.produto_id;
+    ELSIF TG_OP = 'DELETE' THEN
+        INSERT INTO Auditoria (produto_id, produto_nome, data_hora, acao) 
+        SELECT OLD.produto_id, p.nome, NOW(), TRUE
+        FROM Produto p
+        WHERE p.id = OLD.produto_id;
+    END IF;
+    RETURN NULL;
+END; $$ LANGUAGE plpgsql;
 
 
------------------------------------------MANIPULAR_PRODUTO_ESTOQUE ------------------------------------------------------------------------
-    -- Função para facilitar a vida no front end e não ter que adicionar o produto e depois adicionar o produto no estoque, aqui ele ja adiciona direto no produto e depois no estoque de uma vez.
-    -- Para o front end sera necessario passar as infos na ordem:
-    -- nome do produto, quantidade do produto, preco e fabricante
-    CREATE OR REPLACE FUNCTION adicionar_produto(nome_produto VARCHAR(255), quantidade_produto INTEGER, preco_produto FLOAT, fabricante_produto VARCHAR(255)) RETURNS VOID AS $$
+
+   CREATE OR REPLACE FUNCTION adicionar_produto(nome_produto VARCHAR(255), quantidade_produto INTEGER, preco_produto FLOAT, fabricante_produto VARCHAR(255)) RETURNS VOID AS $$
     DECLARE
         id_prod INTEGER;
     BEGIN
@@ -154,11 +143,14 @@ END; $$ LANGUAGE plpgsql;
         IF EXISTS (SELECT 1 FROM Produto WHERE nome = nome_produto) THEN
             SELECT id INTO id_prod FROM Produto WHERE nome = nome_produto;
             UPDATE Produto 
-            SET 
-                quantidade = quantidade_produto, 
+            SET
                 preco = preco_produto, 
                 fabricante = fabricante_produto
             WHERE id = id_prod;
+            UPDATE Estoque
+            SET 
+                quantidade = quantidade_produto
+            WHERE produto_id = id_prod;
         ELSE
             RAISE EXCEPTION 'Produto não encontrado: %', nome_produto;
         END IF;
@@ -179,16 +171,14 @@ END; $$ LANGUAGE plpgsql;
     CREATE VIEW estoque_completo AS
     SELECT e.id, p.nome, e.id AS produto_id, e.quantidade, p.preco, p.fabricante
     FROM Produto p, Estoque e
-    WHERE e.id = p.produto_id
-
--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+    WHERE e.id = p.id;
 
         
     CREATE VIEW venda_produto AS
-    SELECT v.id, v.cliente_id, v.valorTotal, v.produto_id, p.produto_nome, v.data, v.quantidade_produto, v.transportadora_id
+    SELECT v.id, v.cliente_id, v.valorTotal, v.produto_id, p.nome AS produto_nome, v.data_hora, v.quantidade_produto, v.transportadora_id
     FROM Venda v
     JOIN Produto p ON v.produto_id = p.id;
+
 
 
 

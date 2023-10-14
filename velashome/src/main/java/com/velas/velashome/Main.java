@@ -1,8 +1,10 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
 package com.velas.velashome;
+
+import com.velas.velashome.model.dao.DaoFactory;
+import com.velas.velashome.model.dao.Produto_EstoqueDao;
 
 /**
  *
@@ -10,15 +12,9 @@ package com.velas.velashome;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException {
         System.out.println("Hello World!");
-        Transportadora transportadora = new Transportadora();
-               transportadora.setNome("TransTeste");
-               transportadora.setCnpj("1231231231");
-               transportadora.setEndereco("gasdasdsadsad");
-               transportadora.setTelefone("80028922");
-        TransportadoraDaoJDBC controladora = new TransportadoraDaoJDBC();
-        controladora.insert(transportadora);
-
+        Produto_EstoqueDao prod = DaoFactory.createProduto_EstoqueDao();
+        prod.findAll();
     }
 }
