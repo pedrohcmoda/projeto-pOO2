@@ -157,13 +157,13 @@ END; $$ LANGUAGE plpgsql;
     END; 
     $$ LANGUAGE plpgsql;
 
-    CREATE OR REPLACE FUNCTION remover_produto(produto_id INTEGER) RETURNS VOID AS $$
+    CREATE OR REPLACE FUNCTION remover_produto(produto_idd INTEGER) RETURNS VOID AS $$
     BEGIN
         IF EXISTS (SELECT 1 FROM Produto WHERE id = produto_id) THEN
-            DELETE FROM Estoque WHERE produto_id = produto_id;
+            DELETE FROM Estoque WHERE produto_id = produto_idd;
             DELETE FROM Produto WHERE id = produto_id;
         ELSE
-            RAISE EXCEPTION 'Produto com ID % não encontrado', produto_id;
+            RAISE EXCEPTION 'Produto com ID % não encontrado', produto_idd;
         END IF;
     END;
     $$ LANGUAGE plpgsql;

@@ -6,11 +6,11 @@ com/velas/velashome/model/dao/GerenteDao.class
 com/velas/velashome/model/dao/ClienteDao.class
 com/velas/velashome/model/dao/implementation/Produto_EstoqueDaoJDBC.class
 com/velas/velashome/model/entities/Gerente.class
+com/velas/velashome/pcp.class
 com/velas/velashome/model/dao/implementation/TransportadoraDaoJDBC.class
 com/velas/velashome/model/dao/implementation/GerenteDaoJDBC.class
 com/velas/velashome/model/entities/Transportadora.class
 com/velas/velashome/db/DB.class
-com/velas/velashome/Main.class
 com/velas/velashome/model/dao/AuditoriaDao.class
 com/velas/velashome/model/dao/implementation/ClienteDaoJDBC.class
 com/velas/velashome/model/dao/implementation/Venda_ProdutoDaoJDBC.class

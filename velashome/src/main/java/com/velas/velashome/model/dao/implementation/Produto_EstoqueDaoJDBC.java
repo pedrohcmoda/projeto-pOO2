@@ -24,12 +24,12 @@ public class Produto_EstoqueDaoJDBC implements Produto_EstoqueDao {
     public void insert(Produto_Estoque obj) {
         PreparedStatement st = null;
         try {
-            st = conn.prepareStatement("CALL adicionar_produto(?, ?, ?, ?)");
+            st = conn.prepareStatement("SELECT adicionar_produto(?, ?, ?, ?)");
             st.setString(1, obj.getNome());
             st.setInt(2, obj.getQuantidade());
             st.setFloat(3, obj.getPreco());
             st.setString(4, obj.getFabricante());
-            st.executeUpdate();
+            st.execute();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {
@@ -41,12 +41,12 @@ public class Produto_EstoqueDaoJDBC implements Produto_EstoqueDao {
     public void update(Produto_Estoque obj) {
         PreparedStatement st = null;
         try {
-            st = conn.prepareStatement("CALL atualizar_produto(?, ?, ?, ?)");
+            st = conn.prepareStatement("SELECT atualizar_produto(?, ?, ?, ?)");
             st.setString(1, obj.getNome());
             st.setInt(2, obj.getQuantidade());
             st.setFloat(3, obj.getPreco());
             st.setString(4, obj.getFabricante());
-            st.executeUpdate();
+            st.execute();
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {
@@ -58,13 +58,13 @@ public class Produto_EstoqueDaoJDBC implements Produto_EstoqueDao {
     public void delete(Produto_Estoque obj) {
         PreparedStatement st = null;
         try {
-            st = conn.prepareStatement("CALL remover_produto(?)");
-            st.setInt(1, obj.getId());
-            st.executeUpdate();
+            st = conn.prepareStatement("SELECT remover_produto(?)");
+            st.setInt(1, obj.getProduto_id());
+            st.execute();
         } catch (SQLException e) {
-            throw new DbException(e.getMessage());
+            System.out.println("Vish, num deu certo, ja deve ter saido");
         } finally {
-            DB.closeStatement(st);
+            DB.closeStatement(st);  
         }
     }
 

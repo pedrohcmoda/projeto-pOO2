@@ -45,9 +45,9 @@ public class AuditoriaDaoJDBC implements AuditoriaDao{
         Auditoria tr = new Auditoria();
         tr.setId(rs.getInt("id"));
         tr.setProdutoId(rs.getInt("produto_id"));
-        tr.setProduto_nome(rs.getString("telefone"));
-        tr.setData_hora(rs.getDate("nome"));
-        tr.setAcao(rs.getBoolean("telefone"));
+        tr.setProduto_nome(rs.getString("produto_nome"));
+        tr.setData_hora(rs.getDate("data_hora"));
+        tr.setAcao(rs.getBoolean("acao"));
         return tr;
     }
 

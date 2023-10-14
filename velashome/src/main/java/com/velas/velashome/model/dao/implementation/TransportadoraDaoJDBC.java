@@ -21,7 +21,7 @@ public class TransportadoraDaoJDBC implements TransportadoraDao {
     public void insert(Transportadora obj) {
         PreparedStatement st = null;
         try {
-            st = conn.prepareStatement("INSERT INTO transportadora (nome, telefone, cnpj, endereco) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            st = conn.prepareStatement("INSERT INTO transportadora (nome, telefone, cnp, endereco) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             st.setString(1, obj.getNome());
             st.setString(2, obj.getTelefone());
             st.setString(3, obj.getCnpj());
@@ -106,13 +106,13 @@ public class TransportadoraDaoJDBC implements TransportadoraDao {
             DB.closeResultSet(rs);
         }
     }
-
+ 
     private Transportadora pegaInfo(ResultSet rs) throws SQLException {
         Transportadora tr = new Transportadora();
         tr.setId(rs.getInt("id"));
         tr.setNome(rs.getString("nome"));
         tr.setTelefone(rs.getString("telefone"));
-        tr.setCnpj(rs.getString("cnpj"));
+        tr.setCnpj(rs.getString("cnp"));
         tr.setEndereco(rs.getString("endereco"));
         return tr;
     }

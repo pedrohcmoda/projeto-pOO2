@@ -35,6 +35,7 @@ public class GerenteDaoJDBC implements GerenteDao {
                     gerente.setNome(rs.getString("nome"));
                     gerente.setEmail(rs.getString("email"));
                     gerente.setSenha(rs.getString("senha"));
+                    System.out.println("GERENTE AUTENTICADO!!!------- Nome: " + gerente.getNome());
                     return gerente;
                 }
             }

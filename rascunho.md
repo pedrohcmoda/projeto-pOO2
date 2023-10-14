@@ -83,3 +83,13 @@ oq faltaria de classe é gerente, que talvez tenha que existir uma consulta pra 
 
 e produto estoque estao em 1 mesma classe pq mesclei as infos delas
 
+
+
+### Testes
+
+    Produtos call adicionar_produto('ProdutoX', 1, 25000, 'EmpresaY')
+    Remover Produtoscall delete
+    Auditoria 
+    Cliente
+    Transportadoras
+    Vendas

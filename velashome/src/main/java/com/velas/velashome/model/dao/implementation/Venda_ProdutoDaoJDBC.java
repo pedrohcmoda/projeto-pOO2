@@ -32,15 +32,7 @@ public class Venda_ProdutoDaoJDBC implements Venda_ProdutoDao {
             List<Venda_Produto> list = new ArrayList<>();
 
             while (rs.next()) {
-                Venda_Produto vendaProduto = new Venda_Produto();
-                vendaProduto.setId(rs.getInt("id"));
-                vendaProduto.setCliente_id(rs.getInt("cliente_id"));
-                vendaProduto.setValorTotal(rs.getFloat("valorTotal"));
-                vendaProduto.setProduto_id(rs.getInt("produto_id"));
-                vendaProduto.setProduto_nome(rs.getString("produto_nome"));
-                vendaProduto.setData_hora(rs.getDate("data"));
-                vendaProduto.setQuantidade_produto(rs.getInt("quantidade_produto"));
-                vendaProduto.setTransportadora_id(rs.getInt("transportadora_id"));
+                Venda_Produto vendaProduto = pegaInfo(rs);
                 list.add(vendaProduto);
             }
 
@@ -52,4 +44,16 @@ public class Venda_ProdutoDaoJDBC implements Venda_ProdutoDao {
             DB.closeStatement(st);
         }
     }
-}
+    private Venda_Produto pegaInfo(ResultSet rs) throws SQLException {
+        Venda_Produto tr = new Venda_Produto();
+        tr.setId(rs.getInt("id"));
+        tr.setCliente_id(rs.getInt("cliente_id"));
+        tr.setValorTotal(rs.getFloat("valorTotal"));
+        tr.setProduto_id(rs.getInt("produto_id"));
+        tr.setProduto_nome(rs.getString("produto_nome"));
+        tr.setData_hora(rs.getDate("data_hora"));
+        tr.setQuantidade_produto(rs.getInt("quantidade_produto"));
+        tr.setTransportadora_id(rs.getInt("transportadora_id"));
+        return tr;
+    }
+}                
