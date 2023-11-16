@@ -1,13 +1,16 @@
 package com.velas.velashome.model.dao.implementation;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.velas.velashome.db.DB;
 import com.velas.velashome.db.DbException;
 import com.velas.velashome.model.dao.TransportadoraDao;
 import com.velas.velashome.model.entities.Transportadora;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TransportadoraDaoJDBC implements TransportadoraDao {
 
@@ -21,11 +24,19 @@ public class TransportadoraDaoJDBC implements TransportadoraDao {
     public void insert(Transportadora obj) {
         PreparedStatement st = null;
         try {
-            st = conn.prepareStatement("INSERT INTO transportadora (nome, telefone, cnp, endereco) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            st.setString(1, obj.getNome());
-            st.setString(2, obj.getTelefone());
-            st.setString(3, obj.getCnpj());
-            st.setString(4, obj.getEndereco());
+            st = conn.prepareStatement(
+                    "INSERT INTO transportadora (traCnpj, traRazaoSocial, traEmail, traTelefone, traLogradouro, traNumero, traCep, traCidade, traEstado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+
+            st.setString(1, obj.getTraCnpj());
+            st.setString(2, obj.getTraRazaoSocial());
+            st.setString(3, obj.getTraEmail());
+            st.setString(4, obj.getTraTelefone());
+            st.setString(5, obj.getTraLogradouro());
+            st.setInt(6, obj.getTraNumero());
+            st.setInt(7, obj.getTraCep());
+            st.setString(8, obj.getTraCidade());
+            st.setString(9, obj.getTraEstado());
 
             int rowsAffected = st.executeUpdate();
 
@@ -33,7 +44,7 @@ public class TransportadoraDaoJDBC implements TransportadoraDao {
                 ResultSet rs = st.getGeneratedKeys();
                 if (rs.next()) {
                     int id = rs.getInt(1);
-                    obj.setId(id);
+                    obj.setTraId(id);
                 }
             } else {
                 throw new DbException("Erro inesperado! Nenhuma linha afetada!");
@@ -46,11 +57,36 @@ public class TransportadoraDaoJDBC implements TransportadoraDao {
     }
 
     @Override
+    public void update(Transportadora obj) {
+        PreparedStatement st = null;
+        try {
+            st = conn.prepareStatement(
+                    "UPDATE transportadora SET traCnpj = ?, traRazaoSocial = ?, traEmail = ?, traTelefone = ?, traLogradouro = ?, traNumero = ?, traCep = ?, traCidade = ?, traEstado = ? WHERE traId = ?");
+            st.setString(1, obj.getTraCnpj());
+            st.setString(2, obj.getTraRazaoSocial());
+            st.setString(3, obj.getTraEmail());
+            st.setString(4, obj.getTraTelefone());
+            st.setString(5, obj.getTraLogradouro());
+            st.setInt(6, obj.getTraNumero());
+            st.setInt(7, obj.getTraCep());
+            st.setString(8, obj.getTraCidade());
+            st.setString(9, obj.getTraEstado());
+            st.setInt(10, obj.getTraId());
+
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
+    }
+
+    @Override
     public void deleteById(Transportadora obj) {
         PreparedStatement st = null;
         try {
-            st = conn.prepareStatement("DELETE FROM transportadora WHERE id = ?");
-            st.setInt(1, obj.getId());
+            st = conn.prepareStatement("DELETE FROM transportadora WHERE traId = ?");
+            st.setInt(1, obj.getTraId());
 
             int rows = st.executeUpdate();
 
@@ -64,39 +100,19 @@ public class TransportadoraDaoJDBC implements TransportadoraDao {
         }
     }
 
-
-    @Override
-    public void update(Transportadora obj) {
-        PreparedStatement st = null;
-        try {
-            st = conn.prepareStatement("UPDATE transportadora SET nome = ?, telefone = ?, cnpj = ?, endereco = ? WHERE id = ?");
-            st.setString(1, obj.getNome());
-            st.setString(2, obj.getTelefone());
-            st.setString(3, obj.getCnpj());
-            st.setString(4, obj.getEndereco());
-            st.setInt(5, obj.getId());
-    
-            st.executeUpdate();
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
-        } finally {
-            DB.closeStatement(st);
-        }
-    }
-
     @Override
     public List<Transportadora> findAll() {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            st = conn.prepareStatement("SELECT * FROM transportadora ORDER BY id");
+            st = conn.prepareStatement("SELECT * FROM transportadora ORDER BY traId");
 
             rs = st.executeQuery();
             List<Transportadora> list = new ArrayList<>();
 
             while (rs.next()) {
-                Transportadora tr = pegaInfo(rs);
-                list.add(tr);
+                Transportadora transportadora = pegaInfo(rs);
+                list.add(transportadora);
             }
             return list;
         } catch (SQLException e) {
@@ -106,15 +122,19 @@ public class TransportadoraDaoJDBC implements TransportadoraDao {
             DB.closeResultSet(rs);
         }
     }
- 
+
     private Transportadora pegaInfo(ResultSet rs) throws SQLException {
-        Transportadora tr = new Transportadora();
-        tr.setId(rs.getInt("id"));
-        tr.setNome(rs.getString("nome"));
-        tr.setTelefone(rs.getString("telefone"));
-        tr.setCnpj(rs.getString("cnp"));
-        tr.setEndereco(rs.getString("endereco"));
-        return tr;
+        Transportadora transportadora = new Transportadora();
+        transportadora.setTraId(rs.getInt("traId"));
+        transportadora.setTraCnpj(rs.getString("traCnpj"));
+        transportadora.setTraRazaoSocial(rs.getString("traRazaoSocial"));
+        transportadora.setTraEmail(rs.getString("traEmail"));
+        transportadora.setTraTelefone(rs.getString("traTelefone"));
+        transportadora.setTraLogradouro(rs.getString("traLogradouro"));
+        transportadora.setTraNumero(rs.getInt("traNumero"));
+        transportadora.setTraCep(rs.getInt("traCep"));
+        transportadora.setTraCidade(rs.getString("traCidade"));
+        transportadora.setTraEstado(rs.getString("traEstado"));
+        return transportadora;
     }
-    
 }

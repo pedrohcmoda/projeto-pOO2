@@ -1,57 +1,59 @@
 package com.velas.velashome.model.entities;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Auditoria {
-    private int id;
-    private int produtoId;
-    private String produto_nome;
-    private Date data_hora;
-    private boolean acao;
+    private int audId;
+    private int funId;
+    private int proId;
+    private Date datahora;
+    
     public Auditoria() {
     }
-    public Auditoria(int id, int produtoId, String produto_nome, Date data_hora, boolean acao) {
-        this.id = id;
-        this.produtoId = produtoId;
-        this.produto_nome = produto_nome;
-        this.data_hora = data_hora;
-        this.acao = acao;
+    
+    public Auditoria(int audId, int funId, int proId, Date datahora) {
+        this.audId = audId;
+        this.funId = funId;
+        this.proId = proId;
+        this.datahora = datahora;
     }
-    public int getId() {
-        return id;
+
+    public int getAudId() {
+        return audId;
     }
-    public void setId(int id) {
-        this.id = id;
+
+    public void setAudId(int audId) {
+        this.audId = audId;
     }
-    public int getProdutoId() {
-        return produtoId;
+
+    public int getFunId() {
+        return funId;
     }
-    public void setProdutoId(int produtoId) {
-        this.produtoId = produtoId;
+
+    public void setFunId(int funId) {
+        this.funId = funId;
     }
-    public String getProduto_nome() {
-        return produto_nome;
+
+    public int getProId() {
+        return proId;
     }
-    public void setProduto_nome(String produto_nome) {
-        this.produto_nome = produto_nome;
+
+    public void setProId(int proId) {
+        this.proId = proId;
     }
-    public Date getData_hora() {
-        return data_hora;
+
+    public Date getDatahora() {
+        return datahora;
     }
-    public void setData_hora(Date data_hora) {
-        this.data_hora = data_hora;
+
+    public void setDatahora(Date datahora) {
+        this.datahora = datahora;
     }
-    public boolean isAcao() {
-        return acao;
-    }
-    public void setAcao(boolean acao) {
-        this.acao = acao;
-    }
+
     @Override
     public String toString() {
-        return "Auditoria [id=" + id + ", produtoId=" + produtoId + ", produto_nome=" + produto_nome + ", data_hora="
-                + data_hora + ", acao=" + acao + "]";
+        return "Auditoria [audId=" + audId + ", funId=" + funId + ", proId=" + proId + ", datahora=" + datahora + "]";
     }
-    
+
     
 }

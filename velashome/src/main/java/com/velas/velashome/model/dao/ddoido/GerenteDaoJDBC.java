@@ -1,4 +1,4 @@
-package com.velas.velashome.model.dao.implementation;
+package com.velas.velashome.model.dao.ddoido;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,10 +7,10 @@ import java.sql.SQLException;
 
 import com.velas.velashome.db.DB;
 import com.velas.velashome.db.DbException;
-import com.velas.velashome.model.dao.GerenteDao;
+import com.velas.velashome.model.dao.FornecedorDao;
 import com.velas.velashome.model.entities.Gerente;
 
-public class GerenteDaoJDBC implements GerenteDao {
+public class GerenteDaoJDBC implements FornecedorDao {
 
     private Connection conn;
     public GerenteDaoJDBC(Connection conn) {
