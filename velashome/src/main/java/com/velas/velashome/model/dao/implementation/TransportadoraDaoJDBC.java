@@ -61,7 +61,7 @@ public class TransportadoraDaoJDBC implements TransportadoraDao {
         PreparedStatement st = null;
         try {
             st = conn.prepareStatement(
-                    "UPDATE transportadora SET traCnpj = ?, traRazaoSocial = ?, traEmail = ?, traTelefone = ?, traLogradouro = ?, traNumero = ?, traCep = ?, traCidade = ?, traEstado = ? WHERE traId = ?");
+                    "UPDATE transportadora SET traCnpj = COALESCE(?, traCnpj), traRazaoSocial = COALESCE(?, traRazaoSocial), traEmail = COALESCE(?, traEmail), traTelefone = COALESCE(?, traTelefone), traLogradouro = COALESCE(?, traLogradouro), traNumero = COALESCE(?, traNumero), traCep = COALESCE(?, traCep), traCidade = COALESCE(?, traCidade), traEstado = COALESCE(?, traEstado) WHERE traId = ?");
             st.setString(1, obj.getTraCnpj());
             st.setString(2, obj.getTraRazaoSocial());
             st.setString(3, obj.getTraEmail());

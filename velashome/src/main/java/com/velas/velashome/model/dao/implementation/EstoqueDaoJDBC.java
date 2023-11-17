@@ -1,6 +1,7 @@
 package com.velas.velashome.model.dao.implementation;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +26,7 @@ public class EstoqueDaoJDBC implements EstoqueDao {
         PreparedStatement st = null;
         try {
             st = conn.prepareStatement(
-                    "INSERT INTO estoque (quantidade, local, data_entrada, data_validade, proId) VALUES (?, ?, ?, ?, ?)",
+                    "INSERT INTO estoque (estQuantidade, estLocal, estDataEntrada, estDataValidade, proId) VALUES (?, ?, ?, ?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
             st.setInt(1, obj.getEstQuantidade());
@@ -57,11 +58,11 @@ public class EstoqueDaoJDBC implements EstoqueDao {
         PreparedStatement st = null;
         try {
             st = conn.prepareStatement(
-                    "UPDATE estoque SET quantidade = ?, local = ?, data_entrada = ?, data_validade = ? WHERE estId = ?");
+                    "UPDATE estoque SET estQuantidade = COALESCE(?, estQuantidade), local = COALESCE(?, estLocal), estDataEntrada = COALESCE(?, estDataEntrada), estDataValidade = COALESCE(?, estDataValidade) WHERE estId = COALESCE(?, estId)");
             st.setInt(1, obj.getEstQuantidade());
             st.setString(2, obj.getEstLocal());
-            st.setDate(3, new java.sql.Date(obj.getEstDataEntrada().getTime()));
-            st.setDate(4, new java.sql.Date(obj.getEstDataValidade().getTime()));
+            st.setDate(3, (Date) obj.getEstDataEntrada());
+            st.setDate(4, (Date) obj.getEstDataValidade());
             st.setInt(5, obj.getEstId());
 
             st.executeUpdate();

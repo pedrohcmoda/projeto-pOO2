@@ -61,7 +61,7 @@ public class FornecedoraDaoJDBC implements FornecedoraDao {
             PreparedStatement st = null;
             try {
                 st = conn.prepareStatement(
-                        "UPDATE Fornecedora SET forCnpj = ?, forRazaoSocial = ?, forEmail = ?, forTelefone = ?, forLogradouro = ?, forNumero = ?, forCep = ?, forCidade = ?, forEstado = ? WHERE forId = ?");
+                        "UPDATE Fornecedora SET forCnpj = COALESCE(?, forCnpj), forRazaoSocial = COALESCE(?, forRazaoSocial), forEmail = COALESCE(?, forEmail), forTelefone = COALESCE(?, forTelefone), forLogradouro = COALESCE(?, forLogradouro), forNumero = COALESCE(?, forNumero), forCep = COALESCE(?, forCep), forCidade = COALESCE(?, forCidade), forEstado = COALESCE(?, forEstado) WHERE forId = ?");
                 st.setString(1, obj.getForCnpj());
                 st.setString(2, obj.getForRazaoSocial());
                 st.setString(3, obj.getForEmail());

@@ -56,7 +56,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         PreparedStatement st = null;
         try {
             st = conn.prepareStatement(
-                    "UPDATE produto SET proNome = ?, proPreco = ?, proCategoria = ?, forId = ? WHERE proId = ?");
+                    "UPDATE produto SET proNome = COALESCE(?, proNome), proPreco = COALESCE(?, proPreco), proCategoria = COALESCE(?, proCategoria), forId = COALESCE(?, forId) WHERE proId = ?");
             st.setString(1, obj.getProNome());
             st.setFloat(2, obj.getProPreco());
             st.setInt(3, obj.getProCategoria());

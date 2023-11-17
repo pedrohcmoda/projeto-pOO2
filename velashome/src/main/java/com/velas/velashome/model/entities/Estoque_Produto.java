@@ -3,25 +3,26 @@ import java.util.Date;
 
 public class Estoque_Produto {
     private int estId;
+    private String proNome;
+    private float proPreco;
+    private int proCategoria;
+    private int forId;
     private int estQuantidade;
     private String estLocal;
     private Date estDataEntrada;
     private Date estDataValidade;
     private int proId;
-    
+
     public Estoque_Produto() {
-
-        this.estId = estId;
-        this.estQuantidade = estQuantidade;
-        this.estLocal = estLocal;
-        this.estDataEntrada = estDataEntrada;
-        this.estDataValidade = estDataValidade;
-        this.proId = proId;
     }
-
-    public Estoque_Produto(int estId, int estQuantidade, String estLocal, Date estDataEntrada, Date estDataValidade,
-            int proId) {
+    
+    public Estoque_Produto(int estId, String proNome, float proPreco, int proCategoria, int forId, int estQuantidade,
+            String estLocal, Date estDataEntrada, Date estDataValidade, int proId) {
         this.estId = estId;
+        this.proNome = proNome;
+        this.proPreco = proPreco;
+        this.proCategoria = proCategoria;
+        this.forId = forId;
         this.estQuantidade = estQuantidade;
         this.estLocal = estLocal;
         this.estDataEntrada = estDataEntrada;
@@ -33,6 +34,30 @@ public class Estoque_Produto {
     }
     public void setEstId(int estId) {
         this.estId = estId;
+    }
+    public String getProNome() {
+        return proNome;
+    }
+    public void setProNome(String proNome) {
+        this.proNome = proNome;
+    }
+    public float getProPreco() {
+        return proPreco;
+    }
+    public void setProPreco(float proPreco) {
+        this.proPreco = proPreco;
+    }
+    public int getProCategoria() {
+        return proCategoria;
+    }
+    public void setProCategoria(int proCategoria) {
+        this.proCategoria = proCategoria;
+    }
+    public int getForId() {
+        return forId;
+    }
+    public void setForId(int forId) {
+        this.forId = forId;
     }
     public int getEstQuantidade() {
         return estQuantidade;
@@ -66,10 +91,10 @@ public class Estoque_Produto {
     }
     @Override
     public String toString() {
-        return "Estoque_Produto [estId=" + estId + ", estQuantidade=" + estQuantidade + ", estLocal=" + estLocal
+        return "Estoque_Produto [estId=" + estId + ", proNome=" + proNome + ", proPreco=" + proPreco + ", proCategoria="
+                + proCategoria + ", forId=" + forId + ", estQuantidade=" + estQuantidade + ", estLocal=" + estLocal
                 + ", estDataEntrada=" + estDataEntrada + ", estDataValidade=" + estDataValidade + ", proId=" + proId
                 + "]";
-    }
-    
+    } 
     
 }
