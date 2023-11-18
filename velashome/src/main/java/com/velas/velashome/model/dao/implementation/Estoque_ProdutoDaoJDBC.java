@@ -10,7 +10,6 @@ import java.util.List;
 import com.velas.velashome.db.DB;
 import com.velas.velashome.db.DbException;
 import com.velas.velashome.model.dao.Estoque_ProdutoDao;
-import com.velas.velashome.model.entities.Estoque;
 import com.velas.velashome.model.entities.Estoque_Produto;
 
 public class Estoque_ProdutoDaoJDBC implements Estoque_ProdutoDao{
@@ -58,7 +57,7 @@ public class Estoque_ProdutoDaoJDBC implements Estoque_ProdutoDao{
         PreparedStatement st =null;
         try{
             st = conn.prepareStatement(
-            "CALL upd_produto_estoque(?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            "CALL upd_produto_estoque(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, obj.getProNome());
             st.setFloat(2, obj.getProPreco());
             st.setInt(3, obj.getProCategoria());
@@ -67,7 +66,9 @@ public class Estoque_ProdutoDaoJDBC implements Estoque_ProdutoDao{
             st.setString(6, obj.getEstLocal());
             st.setDate(7,(Date) obj.getEstDataEntrada());
             st.setDate(8,(Date) obj.getEstDataValidade());
-            st.setInt(9, id);
+            st.setDate(9, (Date) obj.getOrigemDataEntrada());
+            st.setDate(10, (Date) obj.getOrigemDataValidade());
+            st.setInt(11, id);
             st.executeUpdate();
         } catch(SQLException e){
             throw new DbException(e.getMessage());
@@ -80,9 +81,11 @@ public class Estoque_ProdutoDaoJDBC implements Estoque_ProdutoDao{
     public void delete(Estoque_Produto obj, int id){
         PreparedStatement st = null;
         try{
-            st = conn.prepareStatement("CALL del_produto_estoque(?, ?)");
+            st = conn.prepareStatement("CALL del_produto_estoque(?, ?, ?, ?)");
             st.setInt(1, obj.getProId());
-            st.setInt(2, id);
+            st.setDate(2, (Date) obj.getOrigemDataEntrada());
+            st.setDate(3, (Date) obj.getOrigemDataValidade());
+            st.setInt(4, id);
             st.executeUpdate();
         }catch(SQLException e){
             throw new DbException(e.getMessage());
@@ -124,6 +127,8 @@ public class Estoque_ProdutoDaoJDBC implements Estoque_ProdutoDao{
         estoque.setEstLocal(rs.getString("estLocal"));
         estoque.setEstDataEntrada(rs.getDate("estDataEntrada"));
         estoque.setEstDataValidade(rs.getDate("estDataValidade"));
+        estoque.setOrigemDataEntrada(rs.getDate("origemDataEntrada"));
+        estoque.setOrigemDataValidade(rs.getDate("origemDataValidade"));
         estoque.setProId(rs.getInt("proId"));
         return estoque;
     }

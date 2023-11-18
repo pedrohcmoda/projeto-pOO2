@@ -11,3 +11,4 @@ public interface Estoque_ProdutoDao {
     void delete(Estoque_Produto obj, int id);
     List<Estoque_Produto>findAll();
 }
+

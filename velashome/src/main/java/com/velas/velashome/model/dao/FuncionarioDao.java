@@ -6,6 +6,8 @@ import com.velas.velashome.model.entities.Funcionario;
 
 public interface FuncionarioDao {
 
+
+    int logaFuncionario(Funcionario obj, String senha);
     List<Funcionario>findAll();
     
 }

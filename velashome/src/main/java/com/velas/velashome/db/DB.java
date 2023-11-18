@@ -1,19 +1,19 @@
 package com.velas.velashome.db;
 
 import java.sql.*;
-import io.github.cdimascio.dotenv.Dotenv;
 
 public class DB {
 
     private static Connection conn = null;
-
+    public static int id=0;
+    
     public static Connection getConnection() throws ClassNotFoundException {
-        Dotenv dotenv = Dotenv.configure().load();
-        String dbUrl = dotenv.get("DB_URL");
-        String pgPassword = dotenv.get("PG_PASSWORD");
-        String pgUser = dotenv.get("PG_USER");
+        String dbUrl = "postgres://postgres:fB6f6625CdCaa46DCefebg6Bc-bFaGG@viaduct.proxy.rlwy.net:44891/railway";
+        String pgPassword = "postgres";
+        String pgUser = "fB6f6625CdCaa46DCefebg6Bc-bFaGG";
 
         if (conn == null) {
+        if(id != -1){
             try{
                 Class.forName("org.postgresql.Driver");
                     do {
@@ -25,7 +25,12 @@ public class DB {
                 throw new DbException(e.getMessage());
             }
         }
+        }
         return conn;
+    }
+
+    public static int getId() {
+        return id;
     }
 
     public static void closeConnection() {
