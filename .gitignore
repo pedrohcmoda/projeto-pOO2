@@ -1,1 +1,5 @@
-/stocklite/target/
+/velashome/target/
+target/
+*.env
+.env
+.vscode/
