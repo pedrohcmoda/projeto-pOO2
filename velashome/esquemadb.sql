@@ -61,7 +61,7 @@ create table Produto(
     proId serial primary key,
     proNome VARCHAR(50) not null,
     proPreco FLOAT not null,
-    proCategoria INTEGER not null,
+    proCategoria VARCHAR(20) not null,
     forId INTEGER not null
 );
 
@@ -101,8 +101,12 @@ create table auditoria (
     audId SERIAL primary key,
     funId INTEGER,
     proId INTEGER,
-    datahora DATE
+    acao INTEGER,
+    quantidade INTEGER,
+    datahora TIMESTAMP
 );
+
+
 
 alter table Produto
 add constraint fk_produto_Fornecedora
@@ -120,263 +124,164 @@ alter table Auditoria
 add constraint fk_auditoria_produto
 foreign key (proId) references Produto(proId);
 
-create view ver_produto_estoque as
-select
-	*
-from
-	produto
-natural join estoque
-where
-	estoque.estquantidade > 0;
 
-select
-	*
-from
-	ver_produto_estoque
+CREATE VIEW ver_estoque_produto AS
+SELECT
+    p.proid AS produto_id,
+    p.pronome,
+    p.propreco,
+    p.procategoria,
+    e.estquantidade,
+    e.estlocal,
+    e.estdataentrada,
+    e.estdatavalidade
+FROM
+    produto p
+INNER JOIN estoque e ON p.proid = e.proid
+WHERE
+    e.estquantidade > 0;
 
-create or replace
-	function add_produto_estoque(
+	
+CREATE OR REPLACE FUNCTION add_produto_estoque(
     p_pronome VARCHAR(50),
-	p_propreco FLOAT,
-	p_procategoria INTEGER,
-	p_forID INTEGER,
-	p_estquantidade INTEGER,
-	p_estlocal VARCHAR(50),
-	p_estdataentrada DATE,
-	p_estdatavalidade DATE
-) returns VOID as $$
-declare
+    p_propreco FLOAT,
+    p_procategoria VARCHAR(20),
+    p_forID INTEGER,
+    p_estquantidade INTEGER,
+    p_estlocal VARCHAR(50),
+    p_estdataentrada DATE,
+    p_estdatavalidade DATE,
+    p_funid INTEGER
+) RETURNS VOID AS $$
+DECLARE
     new_produto_id INTEGER;
+    existing_produto_id INTEGER;
+BEGIN
 
-begin 
-    if not exists (
-select
-	1
-from
-	produto
-natural join estoque
-where
-	proNome = p_pronome
-	and estDataValidade = p_estdatavalidade
-    ) then
-        insert
-	into
-	produto (proNome,
-	proPreco,
-	proCategoria,
-	forId)
-values (p_pronome,
-p_propreco,
-p_procategoria,
-p_forID);
+    SELECT produto.proId INTO existing_produto_id
+    FROM produto
+    INNER JOIN estoque ON produto.proId = estoque.proId
+    WHERE produto.proNome = p_pronome
+        AND estoque.estDataValidade = p_estdatavalidade
+        AND estoque.estDataEntrada = p_estdataentrada
+    LIMIT 1;
 
-select
-	proid
-        into
-	new_produto_id
-from
-	produto
-natural join estoque
-where
-	proNome = p_pronome
-	and estoque.estDataValidade = p_estdatavalidade
-limit 1;
+    IF existing_produto_id IS NOT NULL THEN
+        -- Se existir, adiciona a quantidade atual do produto
+        UPDATE estoque
+        SET estQuantidade = estQuantidade + p_estquantidade
+        WHERE proId = existing_produto_id;
+        new_produto_id := existing_produto_id;
+    ELSE
+        SELECT proId INTO new_produto_id
+        FROM produto
+        WHERE proNome = p_pronome
+        LIMIT 1;
 
-if new_produto_id is not null then
-        insert
-	into
-	estoque (proId,
-	estQuantidade,
-	estLocal,
-	estDataEntrada,
-	estDataValidade)
-values (new_produto_id,
-p_estquantidade,
-p_estlocal,
-p_estdataentrada,
-p_estdatavalidade);
-end if;
-end if;
-end $$ language plpgsql;
+        IF new_produto_id IS NULL THEN
+            INSERT INTO produto (proNome, proPreco, proCategoria, forId)
+            VALUES (p_pronome, p_propreco, p_procategoria, p_forID)
+            RETURNING proId INTO new_produto_id;
 
-create or replace
-function delete_produto_estoque(proID INTEGER) returns VOID as $$
-begin
-    delete
-from
-	estoque
-where
-	proId = proID;
+            INSERT INTO estoque (proId, estQuantidade, estLocal, estDataEntrada, estDataValidade)
+            VALUES (new_produto_id, p_estquantidade, p_estlocal, p_estdataentrada, p_estdatavalidade);
+        ELSE
+            INSERT INTO estoque (proId, estQuantidade, estLocal, estDataEntrada, estDataValidade)
+            VALUES (new_produto_id, p_estquantidade, p_estlocal, p_estdataentrada, p_estdatavalidade);
+        END IF;
+    END IF;
 
-delete
-from
-	produto
-where
-	proId = proID;
-end $$ language plpgsql;
+    -- Insere na auditoria
+    INSERT INTO auditoria (funId, proId, acao, quantidade, datahora)
+    VALUES (p_funid, new_produto_id, 1, p_estquantidade, NOW());
+
+END $$ LANGUAGE plpgsql;	
+
+
+
+
 
 create or replace
 function upd_produto_estoque(
-    proID INTEGER,
-    pronome VARCHAR(50),
-    propreco FLOAT,
-    procategoria INTEGER,
-    forID INTEGER,
-    estquantidade INTEGER,
-    estlocal VARCHAR(50),
-    estdataentrada DATE,
-    estdatavalidade DATE
+    p_proID INTEGER,
+    p_pronome VARCHAR(50),
+    p_propreco FLOAT,
+    p_procategoria VARCHAR(20),
+    p_forID INTEGER,
+    p_estquantidade INTEGER,
+    p_estlocal VARCHAR(50),
+    p_estdataentrada DATE,
+    p_estdatavalidade DATE,
+    origem_estdataentrada DATE,
+   	origem_estdatavalidade DATE,
+    p_funid INTEGER
 ) returns VOID as $$
+declare
+	quantidade_atual INTEGER;
 begin
+	
+	SELECT estQuantidade INTO quantidade_atual
+    FROM estoque
+    WHERE estoque.proId = p_proid
+        AND estDataValidade = origem_estdatavalidade
+        AND estDataEntrada = origem_estdataentrada
+    LIMIT 1;
+   
     update
 	produto
 set
-	proNome = coalesce(pronome,
+	proNome = coalesce(p_pronome,
 	proNome),
-	proPreco = coalesce(propreco,
+	proPreco = coalesce(p_propreco,
 	proPreco),
-	proCategoria = coalesce(procategoria,
+	proCategoria = coalesce(p_procategoria,
 	proCategoria),
-	forId = coalesce(forID,
+	forId = coalesce(p_forID,
 	forId)
 where
-	proId = proID;
+	proId = p_proID;
 
 update
 	estoque
 set
-	estQuantidade = coalesce(estquantidade,
+	estQuantidade = coalesce(p_estquantidade,
 	estQuantidade),
-	estLocal = coalesce(estlocal,
+	estLocal = coalesce(p_estlocal,
 	estLocal),
-	estDataEntrada = coalesce(estdataentrada,
+	estDataEntrada = coalesce(p_estdataentrada,
 	estDataEntrada),
-	estDataValidade = coalesce(estdatavalidade,
+	estDataValidade = coalesce(p_estdatavalidade,
 	estDataValidade)
 where
-	proId = proID;
+	proId = p_proID;
+
+    INSERT INTO auditoria (funId, proId, acao, quantidade, datahora)
+    VALUES (p_funid, p_proid, 2, p_estquantidade - quantidade_atual, NOW());
+   
+   
+
 end $$ language plpgsql;
 
-insert
-	into
-	Fornecedora (forCnpj,
-	forRazaoSocial,
-	forEmail,
-	forTelefone,
-	forLogradouro,
-	forNumero,
-	forCep,
-	forCidade,
-	forEstado)
-values ('12345678901234',
-'Fornecedor Teste',
-'fornecedor@teste.com',
-'12345678901',
-'Rua Teste',
-123,
-'12345678',
-'Cidade Teste',
-'TE');
 
-insert
-	into
-	Produto (proNome,
-	proPreco,
-	proCategoria,
-	forId)
-values ('Produto Teste',
-10.99,
-1,
-1);
-
-insert
-	into
-	Estoque (estQuantidade,
-	estLocal,
-	estDataEntrada,
-	estDataValidade,
-	proId)
-values (100,
-'Local Teste',
-'2023-01-01',
-'2023-12-31',
-1);
-
-insert
-	into
-	Funcionario (funNome,
-	funSobrenome,
-	funCpf,
-	funTelefone,
-	funDepartamento,
-	funSalario)
-values ('João',
-'Silva',
-'12345678901',
-'98765432101',
-'RH',
-5000.00);
-
-insert
-	into
-	Transportadora (traCnpj,
-	traRazaoSocial,
-	traEmail,
-	traTelefone,
-	traLogradouro,
-	traNumero,
-	traCep,
-	traCidade,
-	traEstado)
-values ('98765432101234',
-'Transportadora Teste',
-'transportadora@teste.com',
-'98765432101',
-'Rua Transporte',
-456,
-'87654321',
-'Cidade Transporte',
-'TT');
-
-insert
-	into
-	Auditoria (funId,
-	proId,
-	datahora)
-values (1,
-1,
-'2023-01-01');
-
-select
-	upd_produto_estoque(1,
-	'Novo Nome',
-	null,
-	null,
-	null,
-	150,
-	null,
-	'2023-06-01',
-	null);
-
-select
-	delete_produto_estoque(1);
-
-select
-	add_produto_estoque('Produto Novo',
-	15.99,
-	2,
-	1,
-	200,
-	'Estoque Teste',
-	'2023-01-15',
-	'2023-12-31');
-
-select
-	*
+create or replace
+function delete_produto_estoque(p_proID INTEGER,  p_estdataentrada DATE, p_estdatavalidade DATE, p_funid INTEGER) returns VOID as $$
+declare
+	quantidade_atual INTEGER;
+begin
+	
+	SELECT estQuantidade INTO quantidade_atual
+    FROM produto p
+    INNER JOIN estoque e ON p.proid = e.proid 
+    WHERE p.proid = p_proID
+      AND e.estDataEntrada = p_estdataentrada
+      AND e.estDataValidade = p_estdatavalidade
+    LIMIT 1;
+   
+    delete
 from
 	estoque
+where
+	proId = p_proID;
 
-select
-	*
-from
-	produto
+insert into auditoria(funid, proid, acao, quantidade, datahora) values (p_funid, p_proid, 3, quantidade_atual-2*quantidade_atual, NOW());
+end $$ language plpgsql;

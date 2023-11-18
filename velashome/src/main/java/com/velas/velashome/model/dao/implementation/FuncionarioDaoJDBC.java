@@ -20,6 +20,37 @@ public class FuncionarioDaoJDBC implements FuncionarioDao {
         this.conn = conn;
     }
     
+
+    @Override
+    public int logaFuncionario(Funcionario obj, String senha) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+    
+        try {
+            st = conn.prepareStatement("SELECT * FROM funcionario WHERE funCpf = ?");
+            st.setString(1, obj.getFunCpf());
+            rs = st.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("funId");
+                if (senha.compareTo("bancoadmin")==0) {
+                    return id;
+                } else {
+                    return -1;
+                }
+
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
+    
+        return -1;
+    }
+    
+
+
+
     @Override
     public List<Funcionario> findAll() {
         PreparedStatement st = null;
