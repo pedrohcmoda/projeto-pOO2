@@ -4,7 +4,7 @@
  */
 package view;
 
-import aux.Pair;
+import auxiliar.Pair;
 import db.DB;
 import java.text.ParseException;
 import java.util.List;
@@ -20,7 +20,7 @@ import model.entities.Estoque_Produto;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFormattedTextField;
+import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 /**
  *
@@ -80,6 +80,11 @@ public class EstoqueView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setSize(new java.awt.Dimension(1600, 900));
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
 
         jLabelTextNome.setText("Nome");
 
@@ -113,6 +118,11 @@ public class EstoqueView extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -243,7 +253,6 @@ public class EstoqueView extends javax.swing.JFrame {
 
     private void atualizarTabela() {
         try {
-            // Recarregue os dados da tabela após a inserção
             Estoque_ProdutoDao estoqueProdutoDao = new Estoque_ProdutoDaoJDBC(DB.getConnection());
             List<Estoque_Produto> listaProdutos = estoqueProdutoDao.findAll();
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -333,7 +342,36 @@ public class EstoqueView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldValidadeActionPerformed
 
-    
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formMouseClicked
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        try {
+            int row = jTable1.rowAtPoint(evt.getPoint());
+            int col = jTable1.columnAtPoint(evt.getPoint());
+            Estoque_Produto estoque = new Estoque_Produto();
+            Estoque_ProdutoDao estoqueDao = new Estoque_ProdutoDaoJDBC(DB.getConnection());
+            if (col == jTable1.getColumnCount() - 2) {
+                estoque.setProId((int) jTable1.getValueAt(row, 9));
+                estoque.setEstDataEntrada((Date) jTable1.getValueAt(row, 7));
+                estoque.setEstDataValidade((Date) jTable1.getValueAt(row, 8));
+                estoqueDao.delete(estoque, 1);
+
+            } else if (col == jTable1.getColumnCount() - 1) {
+                int id = (int) jTable1.getValueAt(row, 9);
+                 String entrada = (String) jTable1.getValueAt(row, 7);
+                String validade = (String) jTable1.getValueAt(row, 8);
+                editarProdutoEstoque(id, entrada, validade);
+            }
+            atualizarTabela();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TransportadoraView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    public void editarEstoque(){}
+            
     public static Date converterStringParaDate(String dataString) {
         try {
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
@@ -356,6 +394,70 @@ public class EstoqueView extends javax.swing.JFrame {
         jComboBoxFornecedores.setModel(model);
     }
 
+    
+    private void editarProdutoEstoque(int id, String entrada, String validade) {
+    try {
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione um produto para editar.");
+            return;
+        }
+        int estId = (int) jTable1.getValueAt(selectedRow, 0);
+        Estoque_ProdutoDao estoqueProdutoDao = new Estoque_ProdutoDaoJDBC(DB.getConnection());
+
+        Estoque_Produto produtoExistente = new Estoque_Produto();
+        produtoExistente.setEstId(estId);
+        produtoExistente = estoqueProdutoDao.findById(produtoExistente);
+        Estoque_Produto novoProduto = new Estoque_Produto();
+            
+            novoProduto.setEstId(id);
+            novoProduto.setOrigemDataEntrada(converterStringParaDate(entrada));
+            novoProduto.setOrigemDataValidade(converterStringParaDate(validade));
+
+        
+        JTextField txtNome = new JTextField(produtoExistente.getProNome());
+        JTextField txtPreco = new JTextField(String.valueOf(produtoExistente.getProPreco()));
+        JTextField txtCategoria = new JTextField(produtoExistente.getProCategoria());
+        JTextField txtQuantidade = new JTextField(String.valueOf(produtoExistente.getEstQuantidade()));
+        JTextField txtLocal = new JTextField(produtoExistente.getEstLocal());
+        JTextField txtDataEntrada = new JTextField(produtoExistente.getEstDataEntrada().toString());
+        JTextField txtDataValidade = new JTextField(produtoExistente.getEstDataValidade().toString());
+
+        // Crie um array de objetos com os campos de texto
+        Object[] fields = {
+            "Nome:", txtNome,
+            "Preço:", txtPreco,
+            "Categoria:", txtCategoria,
+            "Quantidade:", txtQuantidade,
+            "Local:", txtLocal,
+            "Data de Entrada:", txtDataEntrada,
+            "Data de Validade:", txtDataValidade
+        };
+
+        int result = JOptionPane.showConfirmDialog(this, fields, "Editar Produto no Estoque", JOptionPane.OK_CANCEL_OPTION);
+
+        if (result == JOptionPane.OK_OPTION) {
+            novoProduto.setProId(id);
+            novoProduto.setProNome(txtNome.getText());
+            novoProduto.setProPreco(Float.parseFloat(txtPreco.getText()));
+            novoProduto.setProCategoria(txtCategoria.getText());
+            novoProduto.setEstQuantidade(Integer.parseInt(txtQuantidade.getText()));
+            novoProduto.setEstLocal(txtLocal.getText());
+            novoProduto.setEstDataEntrada(converterStringParaDate(txtDataEntrada.getText()));
+            novoProduto.setEstDataValidade(converterStringParaDate(txtDataValidade.getText()));
+
+            estoqueProdutoDao.update(novoProduto,1);
+
+            atualizarTabela();
+        }
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, "Número inválido. Certifique-se de fornecer valores numéricos para campos como Preço e Quantidade.");
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Erro ao editar o produto no estoque: " + ex.getMessage());
+    }
+}
+
+    
     /**
      * @param args the command line arguments
      */

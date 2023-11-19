@@ -1,6 +1,6 @@
 package model.dao.implementations;
 
-import aux.Pair;
+import auxiliar.Pair;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

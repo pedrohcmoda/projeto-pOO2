@@ -1,6 +1,6 @@
 package model.dao;
 
-import aux.Pair;
+import auxiliar.Pair;
 import java.util.List;
 
 import model.entities.Fornecedora;
