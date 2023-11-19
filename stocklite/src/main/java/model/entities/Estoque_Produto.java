@@ -5,8 +5,9 @@ public class Estoque_Produto {
     private int estId;
     private String proNome;
     private float proPreco;
-    private int proCategoria;
+    private String proCategoria;
     private int forId;
+    private String forRazaoSocial;
     private int estQuantidade;
     private String estLocal;
     private Date estDataEntrada;
@@ -14,18 +15,17 @@ public class Estoque_Produto {
     private Date origemDataEntrada;
     private Date origemDataValidade;
     private int proId;
-    
+
     public Estoque_Produto() {
     }
 
-    public Estoque_Produto(int estId, String proNome, float proPreco, int proCategoria, int forId, int estQuantidade,
-            String estLocal, Date estDataEntrada, Date estDataValidade, Date origemDataEntrada, Date origemDataValidade,
-            int proId) {
+    public Estoque_Produto(int estId, String proNome, float proPreco, String proCategoria, int forId, String forRazaoSocial, int estQuantidade, String estLocal, Date estDataEntrada, Date estDataValidade, Date origemDataEntrada, Date origemDataValidade, int proId) {
         this.estId = estId;
         this.proNome = proNome;
         this.proPreco = proPreco;
         this.proCategoria = proCategoria;
         this.forId = forId;
+        this.forRazaoSocial = forRazaoSocial;
         this.estQuantidade = estQuantidade;
         this.estLocal = estLocal;
         this.estDataEntrada = estDataEntrada;
@@ -59,11 +59,11 @@ public class Estoque_Produto {
         this.proPreco = proPreco;
     }
 
-    public int getProCategoria() {
+    public String getProCategoria() {
         return proCategoria;
     }
 
-    public void setProCategoria(int proCategoria) {
+    public void setProCategoria(String proCategoria) {
         this.proCategoria = proCategoria;
     }
 
@@ -73,6 +73,14 @@ public class Estoque_Produto {
 
     public void setForId(int forId) {
         this.forId = forId;
+    }
+
+    public String getForRazaoSocial() {
+        return forRazaoSocial;
+    }
+
+    public void setForRazaoSocial(String forRazaoSocial) {
+        this.forRazaoSocial = forRazaoSocial;
     }
 
     public int getEstQuantidade() {
@@ -134,10 +142,13 @@ public class Estoque_Produto {
     @Override
     public String toString() {
         return "Estoque_Produto [estId=" + estId + ", proNome=" + proNome + ", proPreco=" + proPreco + ", proCategoria="
-                + proCategoria + ", forId=" + forId + ", estQuantidade=" + estQuantidade + ", estLocal=" + estLocal
-                + ", estDataEntrada=" + estDataEntrada + ", estDataValidade=" + estDataValidade + ", origemDataEntrada="
-                + origemDataEntrada + ", origemDataValidade=" + origemDataValidade + ", proId=" + proId + "]";
+                + proCategoria + ", forId=" + forId + ", forRazaoSocial=" + forRazaoSocial + ", estQuantidade="
+                + estQuantidade + ", estLocal=" + estLocal + ", estDataEntrada=" + estDataEntrada + ", estDataValidade="
+                + estDataValidade + ", origemDataEntrada=" + origemDataEntrada + ", origemDataValidade="
+                + origemDataValidade + ", proId=" + proId + "]";
     }
+    
+    
     
     
 }

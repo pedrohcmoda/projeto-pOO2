@@ -58,9 +58,9 @@ create table Fornecedora(
 );
 
 create table Produto(
-    proId serial primary key,
-    proNome VARCHAR(50) not null,
-    proPreco FLOAT not null,
+    proId serial priproNome VARCHAR(50) not null,
+   mary key,
+     proPreco FLOAT not null,
     proCategoria VARCHAR(20) not null,
     forId INTEGER not null
 );

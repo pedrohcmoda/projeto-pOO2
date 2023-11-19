@@ -4,7 +4,7 @@ public class Produto {
     private int proId;
     private String proNome;
     private float proPreco;
-    private int proCategoria;
+    private String proCategoria;
     private int forId;
     
     public int getProId() {
@@ -25,10 +25,10 @@ public class Produto {
     public void setProPreco(float proPreco) {
         this.proPreco = proPreco;
     }
-    public int getProCategoria() {
+    public String getProCategoria() {
         return proCategoria;
     }
-    public void setProCategoria(int proCategoria) {
+    public void setProCategoria(String proCategoria) {
         this.proCategoria = proCategoria;
     }
     public int getForId() {
@@ -39,7 +39,7 @@ public class Produto {
     }
     public Produto() {
     }
-    public Produto(int proId, String proNome, float proPreco, int proCategoria, int forId) {
+    public Produto(int proId, String proNome, float proPreco, String proCategoria, int forId) {
         this.proId = proId;
         this.proNome = proNome;
         this.proPreco = proPreco;

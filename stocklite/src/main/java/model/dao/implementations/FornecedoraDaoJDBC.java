@@ -1,5 +1,6 @@
 package model.dao.implementations;
 
+import aux.Pair;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -123,7 +124,31 @@ public class FornecedoraDaoJDBC implements FornecedoraDao {
             DB.closeResultSet(rs);
         }
     }
+    
+    @Override
+    public List<Pair<Integer, String>> findAllForCombobox() {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = conn.prepareStatement("SELECT forId, forRazaoSocial FROM fornecedora");
+            rs = st.executeQuery();
+            List<Pair<Integer, String>> result = new ArrayList<>();
 
+            while (rs.next()) {
+                int id = rs.getInt("forId");
+                String nome = rs.getString("forRazaoSocial");
+                Pair<Integer, String> pair = new Pair<>(id, nome);
+                result.add(pair);
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
+    }    
+    
     private Fornecedora pegaInfo(ResultSet rs) throws SQLException {
         Fornecedora fornecedora = new Fornecedora();
         fornecedora.setForId(rs.getInt("forId"));

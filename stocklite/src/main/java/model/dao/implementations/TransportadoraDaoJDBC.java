@@ -122,7 +122,33 @@ public class TransportadoraDaoJDBC implements TransportadoraDao {
             DB.closeResultSet(rs);
         }
     }
+    
+    
+    @Override
+    public Transportadora findById(Transportadora obj) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = conn.prepareStatement("SELECT * FROM transportadora WHERE traId = ?");
+            st.setInt(1, obj.getTraId());
 
+            rs = st.executeQuery();
+
+            if (rs.next()) {
+                return pegaInfo(rs);
+            }
+
+            return null; // Retorna null se não encontrar nenhuma transportadora com o traId fornecido
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
+    }
+
+    
+    
     private Transportadora pegaInfo(ResultSet rs) throws SQLException {
         Transportadora transportadora = new Transportadora();
         transportadora.setTraId(rs.getInt("traId"));

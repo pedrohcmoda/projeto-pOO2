@@ -8,9 +8,9 @@ public class DB {
     public static int id=0;
     
     public static Connection getConnection() throws ClassNotFoundException {
-        String dbUrl = "postgres://postgres:fB6f6625CdCaa46DCefebg6Bc-bFaGG@viaduct.proxy.rlwy.net:44891/railway";
-        String pgPassword = "postgres";
-        String pgUser = "fB6f6625CdCaa46DCefebg6Bc-bFaGG";
+        String dbUrl = "jdbc:postgresql://viaduct.proxy.rlwy.net:14335/railway";
+        String pgPassword = "*Ed64E4AA4e-CbaCgf1DCcC2c316acaa";
+        String pgUser = "postgres";
 
         if (conn == null) {
         if(id != -1){

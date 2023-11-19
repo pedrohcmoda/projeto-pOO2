@@ -1,4 +1,5 @@
 package model.dao.implementations;
+import aux.Pair;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import db.DB;
 import db.DbException;
+import java.sql.Statement;
 import model.dao.Estoque_ProdutoDao;
 import model.entities.Estoque_Produto;
 
@@ -26,27 +28,16 @@ public class Estoque_ProdutoDaoJDBC implements Estoque_ProdutoDao{
         PreparedStatement st = null;
         try{
             st = conn.prepareStatement(
-            "CALL add_produto_estoque(?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            "SELECT add_produto_estoque (?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, obj.getProNome());
             st.setFloat(2, obj.getProPreco());
-            st.setInt(3, obj.getProCategoria());
+            st.setString(3, obj.getProCategoria());
             st.setInt(4, obj.getForId());
             st.setInt(5, obj.getEstQuantidade());
             st.setString(6, obj.getEstLocal());
-            st.setDate(7,(Date) obj.getEstDataEntrada());
-            st.setDate(8,(Date) obj.getEstDataValidade());
+            st.setDate(7, new java.sql.Date(obj.getEstDataEntrada().getDate()));
+            st.setDate(8, new java.sql.Date(obj.getEstDataValidade().getDate()));
             st.setInt(9, id);
-            int rowsAffected = st.executeUpdate();
-
-            if(rowsAffected > 0){
-                ResultSet rs = st.getGeneratedKeys();
-                if(rs.next()){
-                    id = rs.getInt(1);
-                    obj.setProId(id);
-                }
-            }else{
-                throw new DbException("Erro inesperado!, Nenhuma linha afetada");
-            }
         }catch(SQLException e){
             throw new DbException(e.getMessage());
         }finally{
@@ -58,10 +49,10 @@ public class Estoque_ProdutoDaoJDBC implements Estoque_ProdutoDao{
         PreparedStatement st =null;
         try{
             st = conn.prepareStatement(
-            "CALL upd_produto_estoque(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            "SELECT upd_produto_estoque(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.NO_GENERATED_KEYS);
             st.setString(1, obj.getProNome());
             st.setFloat(2, obj.getProPreco());
-            st.setInt(3, obj.getProCategoria());
+            st.setString(3, obj.getProCategoria());
             st.setInt(4, obj.getForId());
             st.setInt(5, obj.getEstQuantidade());
             st.setString(6, obj.getEstLocal());
@@ -100,7 +91,7 @@ public class Estoque_ProdutoDaoJDBC implements Estoque_ProdutoDao{
         PreparedStatement st = null;
         ResultSet rs = null;
         try{
-            st = conn.prepareStatement("SELECT * FROM ver_produto_estoque");
+            st = conn.prepareStatement("SELECT * FROM ver_estoque_produto");
             rs = st.executeQuery();
             List<Estoque_Produto> result = new ArrayList<>();
 
@@ -117,20 +108,20 @@ public class Estoque_ProdutoDaoJDBC implements Estoque_ProdutoDao{
         }
     };
 
+
+
     public Estoque_Produto pegaInfo(ResultSet rs) throws SQLException {
         Estoque_Produto estoque = new Estoque_Produto();
-        estoque.setEstId(rs.getInt("estId"));
+        estoque.setProId(rs.getInt("produto_id"));
         estoque.setProNome(rs.getString("proNome"));
         estoque.setProPreco(rs.getFloat("proPreco"));
-        estoque.setProCategoria(rs.getInt("proCategoria"));
-        estoque.setForId(rs.getInt("forId"));
+        estoque.setProCategoria(rs.getString("proCategoria"));
         estoque.setEstQuantidade(rs.getInt("estQuantidade"));
+        estoque.setForRazaoSocial(rs.getString("forRazaoSocial"));
         estoque.setEstLocal(rs.getString("estLocal"));
         estoque.setEstDataEntrada(rs.getDate("estDataEntrada"));
         estoque.setEstDataValidade(rs.getDate("estDataValidade"));
-        estoque.setOrigemDataEntrada(rs.getDate("origemDataEntrada"));
-        estoque.setOrigemDataValidade(rs.getDate("origemDataValidade"));
-        estoque.setProId(rs.getInt("proId"));
+
         return estoque;
     }
 }

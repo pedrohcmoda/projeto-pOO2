@@ -4,6 +4,10 @@
  */
 package view;
 
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Main extends javax.swing.JFrame {
 
     /**
@@ -88,11 +92,19 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btHomeMouseClicked
 
     private void btHome1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btHome1MouseClicked
-        TransportadoraView.getTransp().mostrar();
+        try {
+            TransportadoraView.getTransp().mostrar();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btHome1MouseClicked
 
     private void btHome2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btHome2MouseClicked
-        // TODO add your handling code here:
+        try {
+            EstoqueView.getEsto().mostrar();
+        } catch (ClassNotFoundException | ParseException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btHome2MouseClicked
 
     /**

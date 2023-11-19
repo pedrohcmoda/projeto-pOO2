@@ -8,6 +8,7 @@ public interface TransportadoraDao {
     void insert(Transportadora obj);
     void update(Transportadora obj);
     void deleteById(Transportadora obj);
+    Transportadora findById(Transportadora obj);
     List<Transportadora> findAll();
 }
     

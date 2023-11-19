@@ -30,7 +30,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
             st.setString(1, obj.getProNome());
             st.setFloat(2, obj.getProPreco());
-            st.setInt(3, obj.getProCategoria());
+            st.setString(3, obj.getProCategoria());
             st.setInt(4, obj.getForId());
 
             int rowsAffected = st.executeUpdate();
@@ -59,7 +59,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                     "UPDATE produto SET proNome = COALESCE(?, proNome), proPreco = COALESCE(?, proPreco), proCategoria = COALESCE(?, proCategoria), forId = COALESCE(?, forId) WHERE proId = ?");
             st.setString(1, obj.getProNome());
             st.setFloat(2, obj.getProPreco());
-            st.setInt(3, obj.getProCategoria());
+            st.setString(3, obj.getProCategoria());
             st.setInt(4, obj.getForId());
             st.setInt(5, obj.getProId());
 
@@ -118,7 +118,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         produto.setProId(rs.getInt("proId"));
         produto.setProNome(rs.getString("proNome"));
         produto.setProPreco(rs.getFloat("proPreco"));
-        produto.setProCategoria(rs.getInt("proCategoria"));
+        produto.setProCategoria(rs.getString("proCategoria"));
         produto.setForId(rs.getInt("forId"));
         return produto;
     }
