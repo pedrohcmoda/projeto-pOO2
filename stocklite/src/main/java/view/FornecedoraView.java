@@ -47,7 +47,7 @@ public class FornecedoraView extends javax.swing.JFrame {
     }
 
 
-    private void preencherTabela() throws ClassNotFoundException {
+    public void preencherTabela() throws ClassNotFoundException {
         FornecedoraDao fornecedoraDao = new FornecedoraDaoJDBC(DB.getConnection());
         List<Fornecedora> fornecedoras = fornecedoraDao.findAll();
 
@@ -131,7 +131,7 @@ public class FornecedoraView extends javax.swing.JFrame {
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Número inválido. Certifique-se de fornecer valores numéricos para campos como Número e CEP.");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Erro ao cadastrar a transportadora: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar a transportadora.");
         }
     }
 
@@ -185,10 +185,8 @@ public class FornecedoraView extends javax.swing.JFrame {
             "Estado:", txtEstado
         };
 
-        // Exiba o popup para editar
         int result = JOptionPane.showConfirmDialog(this, fields, "Editar Transportadora", JOptionPane.OK_CANCEL_OPTION);
 
-        // Se o usuário pressionar OK, atualize a transportadora
         if (result == JOptionPane.OK_OPTION) {
             novaFornecedora.setForId(traId);
             novaFornecedora.setForCnpj(txtCnpj.getText());
@@ -201,16 +199,13 @@ public class FornecedoraView extends javax.swing.JFrame {
             novaFornecedora.setForCidade(txtCidade.getText());
             novaFornecedora.setForEstado(txtEstado.getText());
 
-            // Atualize a transportadora no banco de dados
             fornecedoraDao.update(novaFornecedora);
-
-            // Atualize a tabela após a edição
             preencherTabela();
         }
     } catch (NumberFormatException ex) {
         JOptionPane.showMessageDialog(this, "Número inválido. Certifique-se de fornecer valores numéricos para campos como Número e CEP.");
     } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Erro ao editar a transportadora: " + ex.getMessage());
+        JOptionPane.showMessageDialog(this, "Erro ao editar a transportadora: ");
     }
 }   
     /**

@@ -7,6 +7,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import model.dao.implementations.FuncionarioDaoJDBC;
 import model.entities.Funcionario;
+import view.Main;
 
 public class DB extends JFrame {
 
@@ -66,6 +67,7 @@ public class DB extends JFrame {
 
                 if (id > 0) {
                     JOptionPane.showMessageDialog(this, "Login bem-sucedido! ID: " + id);
+                    Main.getMain().txtLabelLogado.setText(String.valueOf(id));
                     loginBemSucedido = true;
                 } else {
                     JOptionPane.showMessageDialog(this, "Login falhou. CPF ou senha incorretos.");

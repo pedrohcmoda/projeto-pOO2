@@ -4,6 +4,7 @@
  */
 package view;
 
+import db.DB;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,8 +16,18 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        txtLabelLogado.setText("Logar");
     }
-
+    
+    private static Main mainUnic;
+    
+    public static Main getMain() {
+        if (mainUnic == null) {
+            mainUnic = new Main();
+        }
+        return mainUnic;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,8 +40,9 @@ public class Main extends javax.swing.JFrame {
         fornecedora = new javax.swing.JLabel();
         transportadora = new javax.swing.JLabel();
         estoque = new javax.swing.JLabel();
-        auditoria = new javax.swing.JLabel();
         funcionario = new javax.swing.JLabel();
+        auditoria = new javax.swing.JLabel();
+        txtLabelLogado = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,16 +73,27 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        auditoria.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        auditoria.setForeground(new java.awt.Color(102, 102, 102));
-        auditoria.setText("Funcionarios");
-
         funcionario.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         funcionario.setForeground(new java.awt.Color(102, 102, 102));
-        funcionario.setText("Auditoria");
+        funcionario.setText("Funcionarios");
         funcionario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 funcionarioMouseClicked(evt);
+            }
+        });
+
+        auditoria.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        auditoria.setForeground(new java.awt.Color(102, 102, 102));
+        auditoria.setText("Auditoria");
+        auditoria.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                auditoriaMouseClicked(evt);
+            }
+        });
+
+        txtLabelLogado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtLabelLogadoMouseClicked(evt);
             }
         });
 
@@ -81,30 +104,38 @@ public class Main extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(estoque)
-                    .addComponent(transportadora)
-                    .addComponent(fornecedora))
-                .addContainerGap(614, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(estoque)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fornecedora)
+                            .addComponent(transportadora))
+                        .addGap(150, 614, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(funcionario)
-                    .addComponent(auditoria))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtLabelLogado)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(auditoria)
+                        .addComponent(funcionario)))
                 .addGap(34, 34, 34))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(fornecedora)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(fornecedora)
+                    .addComponent(txtLabelLogado))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(transportadora)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(estoque)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 242, Short.MAX_VALUE)
-                .addComponent(funcionario)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(auditoria)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(funcionario)
                 .addGap(30, 30, 30))
         );
 
@@ -113,7 +144,7 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void fornecedoraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fornecedoraMouseClicked
-        FornecedoraView.getForn().setVisible(true);  
+        FornecedoraView.getForn().mostrar();  
     }//GEN-LAST:event_fornecedoraMouseClicked
 
     private void transportadoraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transportadoraMouseClicked
@@ -132,10 +163,28 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_estoqueMouseClicked
 
-    private void funcionarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_funcionarioMouseClicked
+    private void auditoriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_auditoriaMouseClicked
+
         AuditoriaView.getAudi().mostrar();
+    }//GEN-LAST:event_auditoriaMouseClicked
+
+    private void funcionarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_funcionarioMouseClicked
+
+        FuncionarioView.getFunc().mostrar();
     }//GEN-LAST:event_funcionarioMouseClicked
 
+    private void txtLabelLogadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtLabelLogadoMouseClicked
+        try {
+            logado();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_txtLabelLogadoMouseClicked
+    private void logado() throws ClassNotFoundException{
+        if(DB.getId()==0){
+            DB.getConnection();
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -178,5 +227,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel fornecedora;
     private javax.swing.JLabel funcionario;
     private javax.swing.JLabel transportadora;
+    public javax.swing.JLabel txtLabelLogado;
     // End of variables declaration//GEN-END:variables
 }

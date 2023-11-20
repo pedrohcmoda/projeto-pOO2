@@ -4,6 +4,7 @@ import db.DB;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.dao.implementations.AuditoriaDaoJDBC;
 import model.entities.Auditoria;
@@ -115,10 +116,15 @@ public class AuditoriaView extends javax.swing.JFrame {
     }//GEN-LAST:event_tabelaAuditoriaMouseClicked
 
     
-    private void preencherTabela() throws ClassNotFoundException {
+    public void preencherTabela() throws ClassNotFoundException {
         AuditoriaDao auditoriaDao = new AuditoriaDaoJDBC(DB.getConnection());
         List<Auditoria> auditorias = auditoriaDao.findAll();
 
+        
+        if (auditorias.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Lista vazia", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         DefaultTableModel model = (DefaultTableModel) tabelaAuditoria.getModel();
         model.setRowCount(0);
         
@@ -140,7 +146,6 @@ public class AuditoriaView extends javax.swing.JFrame {
             };
             model.addRow(row);
         }
-        
     }
     /**
      * @param args the command line arguments

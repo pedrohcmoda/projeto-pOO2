@@ -100,7 +100,7 @@ public class FuncionarioView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void preencherTabela() throws ClassNotFoundException {
+    public void preencherTabela() throws ClassNotFoundException {
         FuncionarioDao funcionarioDao = new DaoFactory().createFuncionarioDao();
         List<Funcionario> funcionarios = funcionarioDao.findAll();
 

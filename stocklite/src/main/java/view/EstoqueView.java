@@ -46,7 +46,7 @@ public class EstoqueView extends javax.swing.JFrame {
     }
     public void mostrar() throws ParseException {
         this.setVisible(true);
-        atualizarTabela();
+        preencherTabela();
         formatar();
         try {
             popularComboBox();
@@ -265,7 +265,7 @@ public class EstoqueView extends javax.swing.JFrame {
         jTextFieldValidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mascaraData));
     }
 
-    private void atualizarTabela() {
+    public void preencherTabela() {
         try {
             Estoque_ProdutoDao estoqueProdutoDao = new Estoque_ProdutoDaoJDBC(DB.getConnection());
             List<Estoque_Produto> listaProdutos = estoqueProdutoDao.findAll();
@@ -290,7 +290,7 @@ public class EstoqueView extends javax.swing.JFrame {
                 });
             }
         } catch (ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(this, "Erro ao atualizar tabela: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erro ao preencher tabela", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -342,14 +342,14 @@ public class EstoqueView extends javax.swing.JFrame {
             Estoque_ProdutoDao estoqueProdutoDao = new Estoque_ProdutoDaoJDBC(DB.getConnection());
             estoqueProdutoDao.insert(novoProduto, DB.getId());
             
-            atualizarTabela();
+            preencherTabela();
             jTable1.revalidate();
             jTable1.repaint();
             
             limparCampos();
 
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Erro ao cadastrar produto: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Erro ao cadastrar produto", "Erro", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
@@ -368,6 +368,16 @@ public class EstoqueView extends javax.swing.JFrame {
             Estoque_Produto estoque = new Estoque_Produto();
             Estoque_ProdutoDao estoqueDao = new Estoque_ProdutoDaoJDBC(DB.getConnection());
             if (col == jTable1.getColumnCount() - 2) {
+                int id = (int) jTable1.getValueAt(row, 9);
+                java.sql.Date entradaDate = (java.sql.Date) jTable1.getValueAt(row, 7);
+                java.sql.Date validadeDate = (java.sql.Date) jTable1.getValueAt(row, 8);
+
+                String entrada = entradaDate.toString();
+                String validade = validadeDate.toString();
+
+                editarProdutoEstoque(id, entrada, validade);
+
+            } else if (col == jTable1.getColumnCount() - 1) {
                 estoque.setProId((int) jTable1.getValueAt(row, 9));
                 java.sql.Date entradaDate = (java.sql.Date) jTable1.getValueAt(row, 7);
                 java.sql.Date validadeDate = (java.sql.Date) jTable1.getValueAt(row, 8);
@@ -379,18 +389,8 @@ public class EstoqueView extends javax.swing.JFrame {
                 estoque.setOrigemDataValidade(converterStringParaDate(validade));
 
                 estoqueDao.delete(estoque, DB.getId());
-
-            } else if (col == jTable1.getColumnCount() - 1) {
-                int id = (int) jTable1.getValueAt(row, 9);
-                java.sql.Date entradaDate = (java.sql.Date) jTable1.getValueAt(row, 7);
-                java.sql.Date validadeDate = (java.sql.Date) jTable1.getValueAt(row, 8);
-
-                String entrada = entradaDate.toString();
-                String validade = validadeDate.toString();
-
-                editarProdutoEstoque(id, entrada, validade);
             }
-            atualizarTabela();
+            preencherTabela();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(TransportadoraView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -485,13 +485,13 @@ public class EstoqueView extends javax.swing.JFrame {
 
             estoqueProdutoDao.update(novoProduto,DB.getId());
 
-            atualizarTabela();
+            preencherTabela();
             popularComboBox();
         }
     } catch (NumberFormatException ex) {
         JOptionPane.showMessageDialog(this, "Número inválido. Certifique-se de fornecer valores numéricos para campos como Preço e Quantidade.");
     } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Erro ao editar o produto no estoque: " + ex.getMessage());
+        JOptionPane.showMessageDialog(this, "Erro ao editar o produto no estoque.");
     }
 }
 

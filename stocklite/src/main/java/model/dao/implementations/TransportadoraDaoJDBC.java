@@ -140,7 +140,7 @@ public class TransportadoraDaoJDBC implements TransportadoraDao {
                 return pegaInfo(rs);
             }
 
-            return null; // Retorna null se não encontrar nenhuma transportadora com o traId fornecido
+            return null;
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {

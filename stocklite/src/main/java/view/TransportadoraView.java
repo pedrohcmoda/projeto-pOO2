@@ -6,6 +6,7 @@ package view;
 
 import auxiliar.Pair;
 import db.DB;
+import java.awt.HeadlessException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -312,7 +313,7 @@ private static TransportadoraView transpUnic;
         }
     }//GEN-LAST:event_tabelaTransportadoraMouseClicked
 
-    private void preencherTabela() throws ClassNotFoundException {
+    public void preencherTabela() throws ClassNotFoundException {
         TransportadoraDao transportadoraDao = new TransportadoraDaoJDBC(DB.getConnection());
         List<Transportadora> transportadoras = transportadoraDao.findAll();
 
@@ -369,7 +370,7 @@ private static TransportadoraView transpUnic;
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Número inválido. Certifique-se de fornecer valores numéricos para campos como Número e CEP.");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Erro ao cadastrar a transportadora: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar a transportadora.");
         }
     }
 
@@ -410,7 +411,6 @@ private static TransportadoraView transpUnic;
         JTextField txtCidade = new JTextField(transportadoraExistente.getTraCidade());
         JTextField txtEstado = new JTextField(transportadoraExistente.getTraEstado());
 
-        // Crie um array de objetos com os campos de texto
         Object[] fields = {
             "CNPJ:", txtCnpj,
             "Razão Social:", txtRazaoSocial,
@@ -426,7 +426,6 @@ private static TransportadoraView transpUnic;
         // Exiba o popup para editar
         int result = JOptionPane.showConfirmDialog(this, fields, "Editar Transportadora", JOptionPane.OK_CANCEL_OPTION);
 
-        // Se o usuário pressionar OK, atualize a transportadora
         if (result == JOptionPane.OK_OPTION) {
             novaTransportadora.setTraId(traId);
             novaTransportadora.setTraCnpj(txtCnpj.getText());
@@ -439,16 +438,13 @@ private static TransportadoraView transpUnic;
             novaTransportadora.setTraCidade(txtCidade.getText());
             novaTransportadora.setTraEstado(txtEstado.getText());
 
-            // Atualize a transportadora no banco de dados
             transportadoraDao.update(novaTransportadora);
-
-            // Atualize a tabela após a edição
             preencherTabela();
         }
     } catch (NumberFormatException ex) {
         JOptionPane.showMessageDialog(this, "Número inválido. Certifique-se de fornecer valores numéricos para campos como Número e CEP.");
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Erro ao editar a transportadora: " + ex.getMessage());
+    } catch (HeadlessException | ClassNotFoundException ex) {
+        JOptionPane.showMessageDialog(this, "Erro ao editar a transportadora: ");
     }
 }
     /**
