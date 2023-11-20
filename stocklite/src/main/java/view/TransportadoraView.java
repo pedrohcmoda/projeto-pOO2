@@ -4,16 +4,20 @@
  */
 package view;
 
+import auxiliar.Pair;
 import db.DB;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import model.dao.FornecedoraDao;
 import model.dao.TransportadoraDao;
+import model.dao.implementations.FornecedoraDaoJDBC;
 import model.dao.implementations.TransportadoraDaoJDBC;
 import model.entities.Transportadora;
 
@@ -40,10 +44,20 @@ private static TransportadoraView transpUnic;
 
     public void mostrar() {
         this.setVisible(true);
+        try {
+            preencherTabela();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TransportadoraView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void ocultar() {
         this.setVisible(false);
+    try {
+        preencherTabela();
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(TransportadoraView.class.getName()).log(Level.SEVERE, null, ex);
+    }
     }
 
 
@@ -80,6 +94,7 @@ private static TransportadoraView transpUnic;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Transportadora");
+        setPreferredSize(new java.awt.Dimension(1600, 900));
         setSize(new java.awt.Dimension(1600, 900));
 
         jLabelCnpj.setText("CNPJ :");
@@ -194,10 +209,10 @@ private static TransportadoraView transpUnic;
                                     .addComponent(jLabelNumero)
                                     .addComponent(jLabelCidade))
                                 .addGap(34, 34, 34)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextFieldNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextFieldNumero, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addComponent(jTextFieldCidade, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))))
+                        .addGap(874, 989, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane1)
@@ -258,7 +273,8 @@ private static TransportadoraView transpUnic;
                         .addComponent(jTextFieldEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnCadastrar)))
                 .addGap(16, 16, 16)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(291, Short.MAX_VALUE))
         );
 
         pack();
@@ -271,8 +287,9 @@ private static TransportadoraView transpUnic;
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
 
-            cadastrarTransportadora();
+          cadastrarTransportadora();
     }//GEN-LAST:event_btnCadastrarActionPerformed
+
 
     private void tabelaTransportadoraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaTransportadoraMouseClicked
         try {
@@ -287,7 +304,6 @@ private static TransportadoraView transpUnic;
                 transportadoraDao.deleteById(transportadora);
 
             } else if (col == tabelaTransportadora.getColumnCount() - 1) {
-                int traId = (int) tabelaTransportadora.getValueAt(row, 0);
                 editarTransportadora();
             }
             preencherTabela();
@@ -302,8 +318,6 @@ private static TransportadoraView transpUnic;
 
         DefaultTableModel model = (DefaultTableModel) tabelaTransportadora.getModel();
         model.setRowCount(0);
-       
-        Icon excluir  = new ImageIcon("excluir.png");
         
         for (Transportadora transportadora : transportadoras) {
             Object[] row = {
@@ -317,7 +331,8 @@ private static TransportadoraView transpUnic;
                 transportadora.getTraCep(),
                 transportadora.getTraCidade(),
                 transportadora.getTraEstado(),
-                excluir,
+                "Alterar",
+                "Excluir"
             };
             model.addRow(row);
         }

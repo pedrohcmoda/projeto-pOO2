@@ -10,5 +10,6 @@ public interface FornecedoraDao {
     void update(Fornecedora obj);
     void delete(Fornecedora obj);
     List<Fornecedora>findAll();
+    Fornecedora findById(Fornecedora obj);
     public List<Pair<Integer, String>> findAllForCombobox();
 }

@@ -52,18 +52,19 @@ public class Estoque_ProdutoDaoJDBC implements Estoque_ProdutoDao{
         PreparedStatement st =null;
         try{
             st = conn.prepareStatement(
-            "SELECT upd_produto_estoque(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.NO_GENERATED_KEYS);
-            st.setString(1, obj.getProNome());
-            st.setFloat(2, obj.getProPreco());
-            st.setString(3, obj.getProCategoria());
-            st.setInt(4, obj.getForId());
-            st.setInt(5, obj.getEstQuantidade());
-            st.setString(6, obj.getEstLocal());
-            st.setDate(7,new java.sql.Date(obj.getEstDataEntrada().getTime()));
-            st.setDate(8,new java.sql.Date(obj.getEstDataValidade().getTime()));
-            st.setDate(9, new java.sql.Date(obj.getOrigemDataEntrada().getTime()));
-            st.setDate(10, new java.sql.Date(obj.getOrigemDataValidade().getTime()));
-            st.setInt(11, id);
+            "SELECT upd_produto_estoque(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.NO_GENERATED_KEYS);
+            st.setInt(1, obj.getProId());
+            st.setString(2, obj.getProNome());
+            st.setFloat(3, obj.getProPreco());
+            st.setString(4, obj.getProCategoria());
+            st.setInt(5, obj.getForId());
+            st.setInt(6, obj.getEstQuantidade());
+            st.setString(7, obj.getEstLocal());
+            st.setDate(8,new java.sql.Date(obj.getEstDataEntrada().getTime()));
+            st.setDate(9,new java.sql.Date(obj.getEstDataValidade().getTime()));
+            st.setDate(10, new java.sql.Date(obj.getOrigemDataEntrada().getTime()));
+            st.setDate(11, new java.sql.Date(obj.getOrigemDataValidade().getTime()));
+            st.setInt(12, id);
             st.execute();
         } catch(SQLException e){
             throw new DbException(e.getMessage());
@@ -78,8 +79,8 @@ public class Estoque_ProdutoDaoJDBC implements Estoque_ProdutoDao{
         try{
             st = conn.prepareStatement("SELECT delete_produto_estoque(?, ?, ?, ?)");
             st.setInt(1, obj.getProId());
-            st.setDate(2, (Date) obj.getOrigemDataEntrada());
-            st.setDate(3, (Date) obj.getOrigemDataValidade());
+            st.setDate(2, new java.sql.Date(obj.getOrigemDataEntrada().getTime()));
+            st.setDate(3, new java.sql.Date(obj.getOrigemDataValidade().getTime()));
             st.setInt(4, id);
             st.execute();
         }catch(SQLException e){

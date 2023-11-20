@@ -6,7 +6,7 @@ create table Fornecedora(
     forTelefone VARCHAR(11) not null,
     forLogradouro VARCHAR(50) not null,
     forNumero INTEGER not null,
-    forCep VARCHAR(8) not null,
+    forCep INTEGER not null,
 	forCidade VARCHAR(50) not null,
     forEstado VARCHAR(2) not null
 );
@@ -46,7 +46,7 @@ create table transportadora (
     traTelefone VARCHAR(11) not null,
     traLogradouro VARCHAR(50) not null,
     traNumero INTEGER not null,
-    traCep INTEGER not null,
+    traCep INT not null,
     traCidade VARCHAR(50) not null,
     traEstado VARCHAR(50) not null
 );
@@ -311,3 +311,20 @@ from
 	estoque
 where
 	proId = p_proID;
+end $$ language plpgsql;
+
+
+
+
+    private void popularComboBox() throws ClassNotFoundException {
+        TransportadoraDao transportadoraDao = new TransportadoraDaoJDBC(DB.getConnection());
+        List<Pair<Integer, String>> transportadoraes = transportadoraDao.findAllForCombobox();
+
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+
+        for (Pair<Integer, String> transportadora : transportadoraes) {
+            model.addElement(transportadora.getSecond());
+        }
+
+        jComboBoxTransportadoras.setModel(model);
+    }
