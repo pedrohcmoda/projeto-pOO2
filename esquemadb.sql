@@ -16,8 +16,7 @@ create table Produto(
     proId serial primary key,
     proNome VARCHAR(50) not null,
     proPreco FLOAT not null,
-    proCategoria VARCHAR(20) not null,
-    forId INTEGER not null
+    proCategoria VARCHAR(20) not null
 );
 
 create table Estoque(
@@ -26,7 +25,8 @@ create table Estoque(
     estLocal VARCHAR(50) not null,
     estDataEntrada DATE not null,
     estDataValidade DATE not null,
-    proId INTEGER not null
+    proId INTEGER not null,
+    forId INTEGER not null
 );
 
 create table funcionario (
@@ -52,7 +52,7 @@ create table transportadora (
     traEstado VARCHAR(50) not null
 );
 
-create table auditoria (
+create table auditoria(
     audId SERIAL primary key,
     funId INTEGER,
     proId INTEGER,
@@ -61,8 +61,8 @@ create table auditoria (
     datahora TIMESTAMP
 );
 
-alter table Produto
-add constraint fk_produto_Fornecedora
+alter table Estoque
+add constraint fk_estoque_Fornecedora
 foreign key (forId) references Fornecedora(forId) on
 update
 	cascade;
@@ -78,10 +78,6 @@ foreign key (proId) references Produto(proId);
 alter table Auditoria
 add constraint fk_auditoria_funcionario
 foreign key (funId) references Funcionario(funId);
-
-alter table Auditoria
-add constraint fk_auditoria_produto
-foreign key (proId) references Produto(proId);
 
 create view ver_estoque_produto as
 select
@@ -100,7 +96,7 @@ from
 inner join estoque e on
 	p.proid = e.proid
 inner join Fornecedora f on
-	p.forid = f.forid
+	e.forid = f.forid
 where
 	e.estquantidade > 0;
 
@@ -109,7 +105,7 @@ function add_produto_estoque(
     p_pronome VARCHAR(50),
     p_propreco FLOAT,
     p_procategoria VARCHAR(20),
-    p_forID INTEGER,
+    e_forID INTEGER,
     p_estquantidade INTEGER,
     p_estlocal VARCHAR(50),
     p_estdataentrada DATE,
@@ -162,12 +158,10 @@ if new_produto_id is null then
 	into
 	produto (proNome,
 	proPreco,
-	proCategoria,
-	forId)
+	proCategoria)
 values (p_pronome,
 p_propreco,
-p_procategoria,
-p_forID)
+p_procategoria)
             returning proId
 into
 	new_produto_id;
@@ -178,12 +172,14 @@ insert
 	estQuantidade,
 	estLocal,
 	estDataEntrada,
-	estDataValidade)
+	estDataValidade,
+	forId)
 values (new_produto_id,
 p_estquantidade,
 p_estlocal,
 p_estdataentrada,
-p_estdatavalidade);
+p_estdatavalidade,
+e_forID);
 else
             insert
 	into
@@ -191,12 +187,14 @@ else
 	estQuantidade,
 	estLocal,
 	estDataEntrada,
-	estDataValidade)
+	estDataValidade,
+	forId)
 values (new_produto_id,
 p_estquantidade,
 p_estlocal,
 p_estdataentrada,
-p_estdatavalidade);
+p_estdatavalidade,
+e_forID);
 end if;
 end if;
 
@@ -220,7 +218,7 @@ function upd_produto_estoque(
     p_pronome VARCHAR(50),
     p_propreco FLOAT,
     p_procategoria VARCHAR(20),
-    p_forID INTEGER,
+    e_forID INTEGER,
     p_estquantidade INTEGER,
     p_estlocal VARCHAR(50),
     p_estdataentrada DATE,
@@ -254,9 +252,7 @@ set
 	proPreco = coalesce(p_propreco,
 	proPreco),
 	proCategoria = coalesce(p_procategoria,
-	proCategoria),
-	forId = coalesce(p_forID,
-	forId)
+	proCategoria)
 where
 	proId = p_proID;
 
@@ -270,7 +266,9 @@ set
 	estDataEntrada = coalesce(p_estdataentrada,
 	estDataEntrada),
 	estDataValidade = coalesce(p_estdatavalidade,
-	estDataValidade)
+	estDataValidade),
+	forId = coalesce(e_forID,
+	forId)
 where
 	proId = p_proID;
 
@@ -333,18 +331,3 @@ p_proid,
 quantidade_atual,
 NOW());
 end $$ language plpgsql;
-
-insert
-	into
-	funcionario (funNome,
-	funSobrenome,
-	funCpf,
-	funTelefone,
-	funDepartamento,
-	funSalario)
-values ('NomeDoFuncionario',
-'SobrenomeDoFuncionario',
-'12345678901',
-'11234567890',
-'DepartamentoX',
-5000.00);
