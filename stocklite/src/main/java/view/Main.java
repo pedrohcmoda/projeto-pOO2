@@ -45,6 +45,7 @@ public class Main extends javax.swing.JFrame {
         btnLogin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Stocklite");
         setPreferredSize(new java.awt.Dimension(500, 445));
         setSize(new java.awt.Dimension(720, 360));
 

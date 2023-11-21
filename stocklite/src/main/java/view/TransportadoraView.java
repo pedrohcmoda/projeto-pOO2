@@ -95,8 +95,8 @@ private static TransportadoraView transpUnic;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Transportadora");
-        setPreferredSize(new java.awt.Dimension(1600, 900));
-        setSize(new java.awt.Dimension(1600, 900));
+        setPreferredSize(new java.awt.Dimension(1200, 600));
+        setSize(new java.awt.Dimension(1200, 600));
 
         jLabelCnpj.setText("CNPJ :");
 
@@ -274,8 +274,8 @@ private static TransportadoraView transpUnic;
                         .addComponent(jTextFieldEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnCadastrar)))
                 .addGap(16, 16, 16)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(291, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 694, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
 
         pack();

@@ -258,6 +258,7 @@ public class FornecedoraView extends javax.swing.JFrame {
         jLabelTransportadora = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Fornecedora");
         setSize(new java.awt.Dimension(1600, 900));
 
         jLabelCnpj.setText("CNPJ :");

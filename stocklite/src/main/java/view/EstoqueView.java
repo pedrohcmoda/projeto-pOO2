@@ -84,6 +84,7 @@ public class EstoqueView extends javax.swing.JFrame {
         jTextFieldValidade = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Estoque/Produtos");
         setPreferredSize(new java.awt.Dimension(1600, 900));
         setSize(new java.awt.Dimension(1600, 900));
         addMouseListener(new java.awt.event.MouseAdapter() {

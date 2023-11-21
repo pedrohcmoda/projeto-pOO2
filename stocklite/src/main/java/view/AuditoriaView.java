@@ -59,6 +59,7 @@ public class AuditoriaView extends javax.swing.JFrame {
         tabelaAuditoria = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Auditoria");
         setSize(new java.awt.Dimension(1600, 900));
 
         tabelaAuditoria.setModel(new javax.swing.table.DefaultTableModel(

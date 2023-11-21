@@ -57,6 +57,7 @@ public class FuncionarioView extends javax.swing.JFrame {
         tabelaFuncionario = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Funcionarios");
         setSize(new java.awt.Dimension(1600, 900));
 
         tabelaFuncionario.setModel(new javax.swing.table.DefaultTableModel(
