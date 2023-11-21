@@ -8,7 +8,8 @@ create table Fornecedora(
     forNumero INTEGER not null,
     forCep INTEGER not null,
 	forCidade VARCHAR(50) not null,
-    forEstado VARCHAR(2) not null
+    forEstado VARCHAR(2) not null,
+    traId INTEGER
 );
 
 create table Produto(
@@ -62,7 +63,13 @@ create table auditoria (
 
 alter table Produto
 add constraint fk_produto_Fornecedora
-foreign key (forId) references Fornecedora(forId);
+foreign key (forId) references Fornecedora(forId) on
+update
+	cascade;
+
+alter table Fornecedora
+add constraint fk_fornecedora_Transportadora
+foreign key (traId) references Transportadora(traId);
 
 alter table Estoque
 add constraint fk_estoque_produto
@@ -131,7 +138,6 @@ where
 limit 1;
 
 if existing_produto_id is not null then
--- Se existir, adiciona a quantidade atual do produto
         update
 	estoque
 set
@@ -193,8 +199,8 @@ p_estdataentrada,
 p_estdatavalidade);
 end if;
 end if;
--- Insere na auditoria
-    insert
+
+insert
 	into
 	auditoria (funId,
 	proId,
@@ -311,20 +317,34 @@ from
 	estoque
 where
 	proId = p_proID;
+
+quantidade_atual := quantidade_atual-2 * quantidade_atual;
+
+insert
+	into
+	auditoria(funid,
+	proid,
+	acao,
+	quantidade,
+	datahora)
+values (p_funid,
+p_proid,
+3,
+quantidade_atual,
+NOW());
 end $$ language plpgsql;
 
-
-
-
-    private void popularComboBox() throws ClassNotFoundException {
-        TransportadoraDao transportadoraDao = new TransportadoraDaoJDBC(DB.getConnection());
-        List<Pair<Integer, String>> transportadoraes = transportadoraDao.findAllForCombobox();
-
-        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-
-        for (Pair<Integer, String> transportadora : transportadoraes) {
-            model.addElement(transportadora.getSecond());
-        }
-
-        jComboBoxTransportadoras.setModel(model);
-    }
+insert
+	into
+	funcionario (funNome,
+	funSobrenome,
+	funCpf,
+	funTelefone,
+	funDepartamento,
+	funSalario)
+values ('NomeDoFuncionario',
+'SobrenomeDoFuncionario',
+'12345678901',
+'11234567890',
+'DepartamentoX',
+5000.00);
