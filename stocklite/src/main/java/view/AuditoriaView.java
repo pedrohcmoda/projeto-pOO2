@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.dao.implementations.AuditoriaDaoJDBC;
 import model.entities.Auditoria;
-import model.entities.AuditoriaDao;
+import model.dao.AuditoriaDao;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license

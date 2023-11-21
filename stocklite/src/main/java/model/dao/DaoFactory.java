@@ -8,7 +8,6 @@ import model.dao.implementations.FornecedoraDaoJDBC;
 import model.dao.implementations.FuncionarioDaoJDBC;
 import model.dao.implementations.ProdutoDaoJDBC;
 import model.dao.implementations.TransportadoraDaoJDBC;
-import model.entities.AuditoriaDao;
 
 
 

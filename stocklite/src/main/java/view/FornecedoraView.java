@@ -80,7 +80,7 @@ public class FornecedoraView extends javax.swing.JFrame {
         List<Pair<Integer, String>> transportadoras = transportadoraDao.findAllForCombobox();
 
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-
+        model.addElement("");
         for (Pair<Integer, String> transportadora : transportadoras) {
             model.addElement(transportadora.getSecond());
         }
@@ -151,17 +151,18 @@ public class FornecedoraView extends javax.swing.JFrame {
     try {
         int selectedRow = tabelaFornecedora.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Selecione uma transportadora para editar.");
+            JOptionPane.showMessageDialog(this, "Selecione uma fornecedora para editar.");
             return;
         }
-        int traId = (int) tabelaFornecedora.getValueAt(selectedRow, 0);
+        int forId = (int) tabelaFornecedora.getValueAt(selectedRow, 0);
         FornecedoraDao fornecedoraDao = new FornecedoraDaoJDBC(DB.getConnection());
-        
+
         Fornecedora fornecedoraExistente = new Fornecedora();
-        fornecedoraExistente.setForId(traId);
+        fornecedoraExistente.setForId(forId);
         fornecedoraExistente = fornecedoraDao.findById(fornecedoraExistente);
         Fornecedora novaFornecedora = new Fornecedora();
 
+        // Criar JTextFields com os valores existentes
         JTextField txtCnpj = new JTextField(fornecedoraExistente.getForCnpj());
         JTextField txtRazaoSocial = new JTextField(fornecedoraExistente.getForRazaoSocial());
         JTextField txtEmail = new JTextField(fornecedoraExistente.getForEmail());
@@ -172,7 +173,8 @@ public class FornecedoraView extends javax.swing.JFrame {
         JTextField txtCidade = new JTextField(fornecedoraExistente.getForCidade());
         JTextField txtEstado = new JTextField(fornecedoraExistente.getForEstado());
 
-        // Crie um array de objetos com os campos de texto
+   
+        // Criar um array de objetos com os campos de texto e JComboBox
         Object[] fields = {
             "CNPJ:", txtCnpj,
             "Razão Social:", txtRazaoSocial,
@@ -182,13 +184,24 @@ public class FornecedoraView extends javax.swing.JFrame {
             "Número:", txtNumero,
             "CEP:", txtCep,
             "Cidade:", txtCidade,
-            "Estado:", txtEstado
+            "Estado:", txtEstado,
+            "Transportadora:", jComboBoxTransportadoras,
         };
 
-        int result = JOptionPane.showConfirmDialog(this, fields, "Editar Transportadora", JOptionPane.OK_CANCEL_OPTION);
+        int result = JOptionPane.showConfirmDialog(this, fields, "Editar Fornecedora", JOptionPane.OK_CANCEL_OPTION);
 
         if (result == JOptionPane.OK_OPTION) {
-            novaFornecedora.setForId(traId);
+            
+            TransportadoraDao transportadoraDao = new TransportadoraDaoJDBC(DB.getConnection());
+            List<Pair<Integer, String>> fornecedores = transportadoraDao.findAllForCombobox();
+            int idTransportadora=0;
+            String origem = (String) jComboBoxTransportadoras.getSelectedItem();
+            for(Pair<Integer, String> fornecedor : fornecedores){
+                if(fornecedor.getSecond().equals(origem)){
+                    idTransportadora= fornecedor.getFirst();
+                }
+            }
+            novaFornecedora.setForId(forId);
             novaFornecedora.setForCnpj(txtCnpj.getText());
             novaFornecedora.setForRazaoSocial(txtRazaoSocial.getText());
             novaFornecedora.setForEmail(txtEmail.getText());
@@ -198,16 +211,19 @@ public class FornecedoraView extends javax.swing.JFrame {
             novaFornecedora.setForCep(Integer.parseInt(txtCep.getText()));
             novaFornecedora.setForCidade(txtCidade.getText());
             novaFornecedora.setForEstado(txtEstado.getText());
+            novaFornecedora.setTraId(idTransportadora);
 
             fornecedoraDao.update(novaFornecedora);
             preencherTabela();
+            popularComboBox();
         }
     } catch (NumberFormatException ex) {
         JOptionPane.showMessageDialog(this, "Número inválido. Certifique-se de fornecer valores numéricos para campos como Número e CEP.");
     } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Erro ao editar a transportadora: ");
+        JOptionPane.showMessageDialog(this, "Erro ao editar a fornecedora: " + ex.getMessage());
     }
-}   
+}
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -309,6 +325,7 @@ public class FornecedoraView extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tabelaFornecedora);
 
         jComboBoxTransportadoras.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxTransportadoras.setBorder(null);
 
         jLabelTransportadora.setText("Transportadora: ");
 

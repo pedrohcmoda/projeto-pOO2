@@ -299,13 +299,12 @@ private static TransportadoraView transpUnic;
             Transportadora transportadora = new Transportadora();
             TransportadoraDao transportadoraDao = new TransportadoraDaoJDBC(DB.getConnection());
             if (col == tabelaTransportadora.getColumnCount() - 2) {
+                editarTransportadora();                
+            } else if (col == tabelaTransportadora.getColumnCount() - 1) {
                 int traId = (int) tabelaTransportadora.getValueAt(row, 0);
                 System.out.print(traId);
                 transportadora.setTraId(traId);
                 transportadoraDao.deleteById(transportadora);
-
-            } else if (col == tabelaTransportadora.getColumnCount() - 1) {
-                editarTransportadora();
             }
             preencherTabela();
         } catch (ClassNotFoundException ex) {

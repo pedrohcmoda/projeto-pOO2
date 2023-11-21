@@ -8,6 +8,7 @@ import db.DB;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 
 public class Main extends javax.swing.JFrame {
 
@@ -15,8 +16,7 @@ public class Main extends javax.swing.JFrame {
      * Creates new form Main
      */
     public Main() {
-        initComponents();
-        txtLabelLogado.setText("Logar");
+        initComponents();   
     }
     
     private static Main mainUnic;
@@ -42,9 +42,11 @@ public class Main extends javax.swing.JFrame {
         estoque = new javax.swing.JLabel();
         funcionario = new javax.swing.JLabel();
         auditoria = new javax.swing.JLabel();
-        txtLabelLogado = new javax.swing.JLabel();
+        btnLogin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(500, 445));
+        setSize(new java.awt.Dimension(720, 360));
 
         fornecedora.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         fornecedora.setForeground(new java.awt.Color(102, 102, 102));
@@ -91,9 +93,10 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        txtLabelLogado.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txtLabelLogadoMouseClicked(evt);
+        btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
             }
         });
 
@@ -101,24 +104,25 @@ public class Main extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(estoque)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(fornecedora)
-                            .addComponent(transportadora))
-                        .addGap(150, 614, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtLabelLogado)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(auditoria)
-                        .addComponent(funcionario)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(estoque)
+                                    .addComponent(transportadora))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 516, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(fornecedora)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnLogin))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(auditoria)
+                            .addComponent(funcionario))))
                 .addGap(34, 34, 34))
         );
         layout.setVerticalGroup(
@@ -127,12 +131,12 @@ public class Main extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fornecedora)
-                    .addComponent(txtLabelLogado))
+                    .addComponent(btnLogin))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(transportadora)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(estoque)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 242, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 276, Short.MAX_VALUE)
                 .addComponent(auditoria)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(funcionario)
@@ -173,13 +177,13 @@ public class Main extends javax.swing.JFrame {
         FuncionarioView.getFunc().mostrar();
     }//GEN-LAST:event_funcionarioMouseClicked
 
-    private void txtLabelLogadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtLabelLogadoMouseClicked
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         try {
             logado();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_txtLabelLogadoMouseClicked
+    }//GEN-LAST:event_btnLoginActionPerformed
     private void logado() throws ClassNotFoundException{
         if(DB.getId()==0){
             DB.getConnection();
@@ -223,10 +227,11 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel auditoria;
+    private javax.swing.JButton btnLogin;
     private javax.swing.JLabel estoque;
     private javax.swing.JLabel fornecedora;
     private javax.swing.JLabel funcionario;
     private javax.swing.JLabel transportadora;
-    public javax.swing.JLabel txtLabelLogado;
     // End of variables declaration//GEN-END:variables
+   
 }

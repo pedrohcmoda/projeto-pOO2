@@ -8,7 +8,7 @@ import model.dao.FornecedoraDao;
 import model.dao.FuncionarioDao;
 import model.dao.ProdutoDao;
 import model.dao.TransportadoraDao;
-import model.entities.AuditoriaDao;
+import model.dao.AuditoriaDao;
 
 public class DaoFactory {
 

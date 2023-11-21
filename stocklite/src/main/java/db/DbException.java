@@ -8,6 +8,6 @@ public class DbException extends RuntimeException{
 
     public DbException(String msg){
         super(msg);
-        JOptionPane.showMessageDialog(null, "A operação não foi concluida \n Por favor confira os dados informados.", "Erro", 0);
+        JOptionPane.showMessageDialog(null, "Ocorreu um erro durante a operação:\n" + msg, "Erro no Banco de Dados", JOptionPane.ERROR_MESSAGE);
     }
 }

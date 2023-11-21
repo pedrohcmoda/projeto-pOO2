@@ -284,8 +284,8 @@ public class EstoqueView extends javax.swing.JFrame {
                     produto.getEstDataEntrada(),
                     produto.getEstDataValidade(),
                     produto.getProId(),
-                    "Excluir",
-                    "Alterar"
+                    "Alterar",
+                    "Excluir"
                     
                 });
             }

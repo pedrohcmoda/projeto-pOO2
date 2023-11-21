@@ -11,7 +11,7 @@ import java.util.List;
 import model.entities.Auditoria;
 import db.DB;
 import db.DbException;
-import model.entities.AuditoriaDao;
+import model.dao.AuditoriaDao;
 
 public class AuditoriaDaoJDBC implements AuditoriaDao {
 
