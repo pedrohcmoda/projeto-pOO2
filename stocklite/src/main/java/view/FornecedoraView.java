@@ -57,6 +57,8 @@ public class FornecedoraView extends javax.swing.JFrame {
     private void formatar() throws ParseException {
         MaskFormatter mascaraCNPJ = new MaskFormatter("##.###.###/####-##");
         mascaraCNPJ.setPlaceholderCharacter('_');
+        MaskFormatter mascaraTelefone = new MaskFormatter("(##)#########");
+        jFormattedTextFieldTelefone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mascaraTelefone));
         jFormattedTextFieldCNPJ.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mascaraCNPJ));
     }
 
@@ -116,7 +118,7 @@ public class FornecedoraView extends javax.swing.JFrame {
             String cnpj = jFormattedTextFieldCNPJ.getText();
             String razaoSocial = jTextFieldRazaoSocial.getText();
             String email = jTextFieldEmail.getText();
-            String telefone = jTextFieldTelefone.getText();
+            String telefone = jFormattedTextFieldTelefone.getText();
             String logradouro = jTextFieldLogradouro.getText();
             int numero = Integer.parseInt(jTextFieldNumero.getText());
             int cep = Integer.parseInt(jTextFieldCep.getText());
@@ -152,7 +154,7 @@ public class FornecedoraView extends javax.swing.JFrame {
         jFormattedTextFieldCNPJ.setText("");
         jTextFieldRazaoSocial.setText("");
         jTextFieldEmail.setText("");
-        jTextFieldTelefone.setText("");
+        jFormattedTextFieldTelefone.setText("");
         jTextFieldLogradouro.setText("");
         jTextFieldNumero.setText("");
         jTextFieldCep.setText("");
@@ -257,7 +259,6 @@ public class FornecedoraView extends javax.swing.JFrame {
         jLabelEstado = new javax.swing.JLabel();
         jTextFieldRazaoSocial = new javax.swing.JTextField();
         jTextFieldEmail = new javax.swing.JTextField();
-        jTextFieldTelefone = new javax.swing.JTextField();
         jTextFieldLogradouro = new javax.swing.JTextField();
         jTextFieldNumero = new javax.swing.JTextField();
         jTextFieldCep = new javax.swing.JTextField();
@@ -269,9 +270,11 @@ public class FornecedoraView extends javax.swing.JFrame {
         jComboBoxTransportadoras = new javax.swing.JComboBox<>();
         jLabelTransportadora = new javax.swing.JLabel();
         jFormattedTextFieldCNPJ = new javax.swing.JFormattedTextField();
+        jFormattedTextFieldTelefone = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Fornecedora");
+        setPreferredSize(new java.awt.Dimension(1600, 900));
         setSize(new java.awt.Dimension(1600, 900));
 
         jLabelCnpj.setText("CNPJ :");
@@ -319,7 +322,7 @@ public class FornecedoraView extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "CNPJ", "Razão Social", "Email", "Telefone", "Logradouro", "Numero", "CEP", "Cidade", "Estado", "ID Transportadora", "", ""
+                "ID", "CNPJ", "Razão Social", "Email", "Telefone", "Logradouro", "Numero", "CEP", "Cidade", "UF", "ID Transportadora", "", ""
             }
         ) {
             Class[] types = new Class [] {
@@ -337,6 +340,9 @@ public class FornecedoraView extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tabelaFornecedora.setPreferredSize(new java.awt.Dimension(1600, 900));
+        tabelaFornecedora.setRowHeight(35);
+        tabelaFornecedora.setShowHorizontalLines(true);
         tabelaFornecedora.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaFornecedoraMouseClicked(evt);
@@ -344,7 +350,12 @@ public class FornecedoraView extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tabelaFornecedora);
         if (tabelaFornecedora.getColumnModel().getColumnCount() > 0) {
-            tabelaFornecedora.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tabelaFornecedora.getColumnModel().getColumn(0).setMinWidth(40);
+            tabelaFornecedora.getColumnModel().getColumn(0).setPreferredWidth(40);
+            tabelaFornecedora.getColumnModel().getColumn(0).setMaxWidth(40);
+            tabelaFornecedora.getColumnModel().getColumn(9).setMinWidth(40);
+            tabelaFornecedora.getColumnModel().getColumn(9).setPreferredWidth(40);
+            tabelaFornecedora.getColumnModel().getColumn(9).setMaxWidth(40);
         }
 
         jComboBoxTransportadoras.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -396,10 +407,10 @@ public class FornecedoraView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jComboBoxTransportadoras, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextFieldTelefone, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                             .addComponent(jTextFieldRazaoSocial, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                             .addComponent(jTextFieldNumero, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                            .addComponent(jTextFieldCidade, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
+                            .addComponent(jTextFieldCidade, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                            .addComponent(jFormattedTextFieldTelefone))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCadastrar))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -421,7 +432,7 @@ public class FornecedoraView extends javax.swing.JFrame {
                     .addComponent(jLabelEmail)
                     .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelTelefone)
-                    .addComponent(jTextFieldTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jFormattedTextFieldTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelLogradouro)
@@ -494,6 +505,7 @@ public class FornecedoraView extends javax.swing.JFrame {
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JComboBox<String> jComboBoxTransportadoras;
     private javax.swing.JFormattedTextField jFormattedTextFieldCNPJ;
+    private javax.swing.JFormattedTextField jFormattedTextFieldTelefone;
     private javax.swing.JLabel jLabelCep;
     private javax.swing.JLabel jLabelCidade;
     private javax.swing.JLabel jLabelCnpj;
@@ -512,7 +524,6 @@ public class FornecedoraView extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldLogradouro;
     private javax.swing.JTextField jTextFieldNumero;
     private javax.swing.JTextField jTextFieldRazaoSocial;
-    private javax.swing.JTextField jTextFieldTelefone;
     private javax.swing.JTable tabelaFornecedora;
     // End of variables declaration//GEN-END:variables
 }

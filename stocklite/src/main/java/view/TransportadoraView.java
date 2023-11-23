@@ -52,6 +52,8 @@ private static TransportadoraView transpUnic;
     private void formatar() throws ParseException {
         MaskFormatter mascaraCNPJ = new MaskFormatter("##.###.###/####-##");
         mascaraCNPJ.setPlaceholderCharacter('_');
+        MaskFormatter mascaraTelefone = new MaskFormatter("(##)#########");
+        jFormattedTextFieldTelefone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mascaraTelefone));
         jFormattedTextFieldCNPJ.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mascaraCNPJ));
     }
     
@@ -91,7 +93,6 @@ private static TransportadoraView transpUnic;
         jLabelEmail = new javax.swing.JLabel();
         jTextFieldEmail = new javax.swing.JTextField();
         jLabelTelefone = new javax.swing.JLabel();
-        jTextFieldTelefone = new javax.swing.JTextField();
         jLabelLogradouro = new javax.swing.JLabel();
         jTextFieldLogradouro = new javax.swing.JTextField();
         jLabelNumero = new javax.swing.JLabel();
@@ -106,11 +107,12 @@ private static TransportadoraView transpUnic;
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaTransportadora = new javax.swing.JTable();
         jFormattedTextFieldCNPJ = new javax.swing.JFormattedTextField();
+        jFormattedTextFieldTelefone = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Transportadora");
-        setPreferredSize(new java.awt.Dimension(1200, 600));
-        setSize(new java.awt.Dimension(1200, 600));
+        setPreferredSize(new java.awt.Dimension(1600, 900));
+        setSize(new java.awt.Dimension(1600, 900));
 
         jLabelCnpj.setText("CNPJ :");
 
@@ -157,7 +159,7 @@ private static TransportadoraView transpUnic;
                 {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "CNPJ", "Razão Social", "Email", "Telefone", "Logradouro", "Numero", "CEP", "Cidade", "Estado", "", ""
+                "ID", "CNPJ", "Razão Social", "Email", "Telefone", "Logradouro", "Numero", "CEP", "Cidade", "UF", "", ""
             }
         ) {
             Class[] types = new Class [] {
@@ -175,6 +177,8 @@ private static TransportadoraView transpUnic;
                 return canEdit [columnIndex];
             }
         });
+        tabelaTransportadora.setRowHeight(35);
+        tabelaTransportadora.setShowHorizontalLines(true);
         tabelaTransportadora.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaTransportadoraMouseClicked(evt);
@@ -187,6 +191,8 @@ private static TransportadoraView transpUnic;
             tabelaTransportadora.getColumnModel().getColumn(0).setMaxWidth(40);
             tabelaTransportadora.getColumnModel().getColumn(6).setPreferredWidth(70);
             tabelaTransportadora.getColumnModel().getColumn(6).setMaxWidth(70);
+            tabelaTransportadora.getColumnModel().getColumn(9).setMinWidth(40);
+            tabelaTransportadora.getColumnModel().getColumn(9).setPreferredWidth(40);
             tabelaTransportadora.getColumnModel().getColumn(9).setMaxWidth(40);
             tabelaTransportadora.getColumnModel().getColumn(10).setMaxWidth(40);
             tabelaTransportadora.getColumnModel().getColumn(11).setMaxWidth(40);
@@ -203,6 +209,24 @@ private static TransportadoraView transpUnic;
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelEmail)
+                                    .addComponent(jLabelCnpj))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(38, 38, 38)
+                                        .addComponent(jFormattedTextFieldCNPJ))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(40, 40, 40)
+                                        .addComponent(jTextFieldEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelTelefone)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabelRazaoSocial)
+                                        .addGap(12, 12, 12)
+                                        .addComponent(jTextFieldRazaoSocial, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabelLogradouro)
                                     .addComponent(jLabelCep))
                                 .addGap(12, 12, 12)
@@ -215,33 +239,14 @@ private static TransportadoraView transpUnic;
                                     .addComponent(jLabelCidade))
                                 .addGap(34, 34, 34)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextFieldNumero, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                                    .addComponent(jTextFieldCidade, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabelEmail)
-                                    .addComponent(jLabelCnpj))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(38, 38, 38)
-                                        .addComponent(jFormattedTextFieldCNPJ))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(40, 40, 40)
-                                        .addComponent(jTextFieldEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabelTelefone)
-                                        .addGap(32, 32, 32)
-                                        .addComponent(jTextFieldTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabelRazaoSocial)
-                                        .addGap(12, 12, 12)
-                                        .addComponent(jTextFieldRazaoSocial, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(874, 874, Short.MAX_VALUE))
+                                    .addComponent(jFormattedTextFieldTelefone, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jTextFieldNumero, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                        .addComponent(jTextFieldCidade, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)))))
+                        .addGap(988, 988, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1432, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1546, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabelEstado)
                                 .addGap(42, 42, 42)
@@ -263,16 +268,13 @@ private static TransportadoraView transpUnic;
                                 .addComponent(jLabelCnpj)
                                 .addComponent(jFormattedTextFieldCNPJ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabelRazaoSocial))))
-                .addGap(6, 6, 6)
+                .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextFieldTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelEmail)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabelTelefone)
-                                .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(jLabelEmail)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabelTelefone)
+                        .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jFormattedTextFieldTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -379,7 +381,7 @@ private static TransportadoraView transpUnic;
             String cnpj = jFormattedTextFieldCNPJ.getText();
             String razaoSocial = jTextFieldRazaoSocial.getText();
             String email = jTextFieldEmail.getText();
-            String telefone = jTextFieldTelefone.getText();
+            String telefone = jFormattedTextFieldTelefone.getText();
             String logradouro = jTextFieldLogradouro.getText();
             int numero = Integer.parseInt(jTextFieldNumero.getText());
             int cep = Integer.parseInt(jTextFieldCep.getText());
@@ -412,7 +414,7 @@ private static TransportadoraView transpUnic;
         jFormattedTextFieldCNPJ.setText("");
         jTextFieldRazaoSocial.setText("");
         jTextFieldEmail.setText("");
-        jTextFieldTelefone.setText("");
+        jFormattedTextFieldTelefone.setText("");
         jTextFieldLogradouro.setText("");
         jTextFieldNumero.setText("");
         jTextFieldCep.setText("");
@@ -488,6 +490,7 @@ private static TransportadoraView transpUnic;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JFormattedTextField jFormattedTextFieldCNPJ;
+    private javax.swing.JFormattedTextField jFormattedTextFieldTelefone;
     private javax.swing.JLabel jLabelCep;
     private javax.swing.JLabel jLabelCidade;
     private javax.swing.JLabel jLabelCnpj;
@@ -505,7 +508,6 @@ private static TransportadoraView transpUnic;
     private javax.swing.JTextField jTextFieldLogradouro;
     private javax.swing.JTextField jTextFieldNumero;
     private javax.swing.JTextField jTextFieldRazaoSocial;
-    private javax.swing.JTextField jTextFieldTelefone;
     private javax.swing.JTable tabelaTransportadora;
     // End of variables declaration//GEN-END:variables
 }

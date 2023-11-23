@@ -91,6 +91,8 @@ public class FuncionarioView extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tabelaFuncionario.setRowHeight(35);
+        tabelaFuncionario.setShowHorizontalLines(true);
         jScrollPane1.setViewportView(tabelaFuncionario);
         if (tabelaFuncionario.getColumnModel().getColumnCount() > 0) {
             tabelaFuncionario.getColumnModel().getColumn(0).setMinWidth(40);

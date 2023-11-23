@@ -81,6 +81,8 @@ public class AuditoriaView extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tabelaAuditoria.setRowHeight(35);
+        tabelaAuditoria.setShowHorizontalLines(true);
         tabelaAuditoria.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaAuditoriaMouseClicked(evt);

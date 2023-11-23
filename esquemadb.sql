@@ -3,7 +3,7 @@ create table Fornecedora(
     forCnpj VARCHAR(18) not null,
     forRazaoSocial VARCHAR(50) not null,
     forEmail VARCHAR(50) not null,
-    forTelefone VARCHAR(11) not null,
+    forTelefone VARCHAR(13) not null,
     forLogradouro VARCHAR(50) not null,
     forNumero INTEGER not null,
     forCep INTEGER not null,
@@ -18,7 +18,6 @@ create table Produto(
     proPreco FLOAT not null,
     proCategoria VARCHAR(20) not null
 );
-
 create table Estoque(
     estId serial primary key, 
     estQuantidade INTEGER not null, 
@@ -34,7 +33,7 @@ create table funcionario (
     funNome VARCHAR(50) not null,
     funSobrenome VARCHAR(50) not null,
     funCpf VARCHAR(14) not null,
-    funTelefone VARCHAR(11) not null,
+    funTelefone VARCHAR(13) not null,
     funDepartamento VARCHAR(50) not null,
     funSalario FLOAT not null
 );
@@ -44,7 +43,7 @@ create table transportadora (
     traCnpj VARCHAR(18) not null,
     traRazaoSocial VARCHAR(50) not null,
     traEmail VARCHAR(50) not null,
-    traTelefone VARCHAR(11) not null,
+    traTelefone VARCHAR(13) not null,
     traLogradouro VARCHAR(50) not null,
     traNumero INTEGER not null,
     traCep INT not null,
