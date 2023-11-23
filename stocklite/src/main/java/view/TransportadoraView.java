@@ -304,8 +304,12 @@ private static TransportadoraView transpUnic;
                 int traId = (int) tabelaTransportadora.getValueAt(row, 0);
                 System.out.print(traId);
                 transportadora.setTraId(traId);
-                transportadoraDao.deleteById(transportadora);
+                int result = JOptionPane.showConfirmDialog(this, "Confirmar exclusão", "Confirme", JOptionPane.YES_NO_OPTION);
+                if(result==0){
+                    transportadoraDao.deleteById(transportadora);
+                }
             }
+                
             preencherTabela();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(TransportadoraView.class.getName()).log(Level.SEVERE, null, ex);

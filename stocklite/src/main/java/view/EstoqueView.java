@@ -109,7 +109,7 @@ public class EstoqueView extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nome", "Preço", "Categoria", "Razão Social do Fornecedor", "Quantidade", "Local", "Data de Entrada", "Data de Saida", "ID do Produto", "", ""
+                "ID", "Nome", "Preço", "Categoria", "Razão Social do Fornecedor", "Quantidade", "Local", "Data de Entrada", "Data de Validade", "ID do Produto", "", ""
             }
         ) {
             Class[] types = new Class [] {
@@ -379,17 +379,20 @@ public class EstoqueView extends javax.swing.JFrame {
                 editarProdutoEstoque(id, entrada, validade);
 
             } else if (col == jTable1.getColumnCount() - 1) {
-                estoque.setProId((int) jTable1.getValueAt(row, 9));
-                java.sql.Date entradaDate = (java.sql.Date) jTable1.getValueAt(row, 7);
-                java.sql.Date validadeDate = (java.sql.Date) jTable1.getValueAt(row, 8);
+                int result = JOptionPane.showConfirmDialog(this, "Confirmar exclusão", "Confirme", JOptionPane.YES_NO_OPTION);
+                if(result==0){
+                    estoque.setProId((int) jTable1.getValueAt(row, 9));
+                    java.sql.Date entradaDate = (java.sql.Date) jTable1.getValueAt(row, 7);
+                    java.sql.Date validadeDate = (java.sql.Date) jTable1.getValueAt(row, 8);
 
-                String entrada = entradaDate.toString();
-                String validade = validadeDate.toString();
-                
-                estoque.setOrigemDataEntrada(converterStringParaDate(entrada));
-                estoque.setOrigemDataValidade(converterStringParaDate(validade));
+                    String entrada = entradaDate.toString();
+                    String validade = validadeDate.toString();
 
-                estoqueDao.delete(estoque, DB.getId());
+                    estoque.setOrigemDataEntrada(converterStringParaDate(entrada));
+                    estoque.setOrigemDataValidade(converterStringParaDate(validade));
+
+                    estoqueDao.delete(estoque, DB.getId());
+                }
             }
             preencherTabela();
         } catch (ClassNotFoundException ex) {

@@ -446,9 +446,11 @@ public class FornecedoraView extends javax.swing.JFrame {
                 editarFornecedora();
             } else if (col == tabelaFornecedora.getColumnCount() - 1) {
                 int traId = (int) tabelaFornecedora.getValueAt(row, 0);
-                System.out.print(traId);
                 fornecedora.setForId(traId);
-                fornecedoraDao.delete(fornecedora);
+                int result = JOptionPane.showConfirmDialog(this, "Confirmar exclusão", "Confirme", JOptionPane.YES_NO_OPTION);
+                if(result==0){
+                    fornecedoraDao.delete(fornecedora);
+                }
             }
             preencherTabela();
         } catch (ClassNotFoundException ex) {

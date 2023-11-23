@@ -165,7 +165,7 @@
                 <Column editable="false" title="Quantidade" type="java.lang.Integer"/>
                 <Column editable="false" title="Local" type="java.lang.String"/>
                 <Column editable="false" title="Data de Entrada" type="java.lang.String"/>
-                <Column editable="false" title="Data de Saida" type="java.lang.String"/>
+                <Column editable="false" title="Data de Validade" type="java.lang.String"/>
                 <Column editable="false" title="ID do Produto" type="java.lang.Integer"/>
                 <Column editable="false" title="" type="java.lang.Object"/>
                 <Column editable="false" title="" type="java.lang.Object"/>
