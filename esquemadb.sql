@@ -1,6 +1,6 @@
 create table Fornecedora(
     forId serial primary key,
-    forCnpj VARCHAR(14) not null,
+    forCnpj VARCHAR(18) not null,
     forRazaoSocial VARCHAR(50) not null,
     forEmail VARCHAR(50) not null,
     forTelefone VARCHAR(11) not null,
@@ -33,7 +33,7 @@ create table funcionario (
     funId serial primary key,
     funNome VARCHAR(50) not null,
     funSobrenome VARCHAR(50) not null,
-    funCpf VARCHAR(11) not null,
+    funCpf VARCHAR(14) not null,
     funTelefone VARCHAR(11) not null,
     funDepartamento VARCHAR(50) not null,
     funSalario FLOAT not null
@@ -41,7 +41,7 @@ create table funcionario (
 
 create table transportadora (
     traId SERIAL primary key,
-    traCnpj VARCHAR(14) not null,
+    traCnpj VARCHAR(18) not null,
     traRazaoSocial VARCHAR(50) not null,
     traEmail VARCHAR(50) not null,
     traTelefone VARCHAR(11) not null,

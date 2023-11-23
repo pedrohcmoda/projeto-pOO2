@@ -85,7 +85,6 @@ public class EstoqueView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Estoque/Produtos");
-        setPreferredSize(new java.awt.Dimension(1600, 900));
         setSize(new java.awt.Dimension(1600, 900));
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -265,7 +264,7 @@ public class EstoqueView extends javax.swing.JFrame {
         jTextFieldEntrada.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mascaraData));
         jTextFieldValidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mascaraData));
     }
-
+    
     public void preencherTabela() {
         try {
             Estoque_ProdutoDao estoqueProdutoDao = new Estoque_ProdutoDaoJDBC(DB.getConnection());

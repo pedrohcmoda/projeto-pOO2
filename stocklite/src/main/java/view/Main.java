@@ -155,7 +155,7 @@ public class Main extends javax.swing.JFrame {
     private void transportadoraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transportadoraMouseClicked
         try {
             TransportadoraView.getTransp().mostrar();
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException | ParseException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_transportadoraMouseClicked

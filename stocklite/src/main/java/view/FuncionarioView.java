@@ -5,10 +5,15 @@
 package view;
 
 import db.DB;
+import java.text.ParseException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JFormattedTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 import model.dao.DaoFactory;
 import model.dao.FuncionarioDao;
 import model.dao.implementations.FuncionarioDaoJDBC;
@@ -68,18 +73,30 @@ public class FuncionarioView extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID de funcionário", "Nome", "Sobrenome", "CPF", "Telefone", "Departamento", "Salario"
+                "ID", "Nome", "Sobrenome", "CPF", "Telefone", "Departamento", "Salario"
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         jScrollPane1.setViewportView(tabelaFuncionario);
+        if (tabelaFuncionario.getColumnModel().getColumnCount() > 0) {
+            tabelaFuncionario.getColumnModel().getColumn(0).setMinWidth(40);
+            tabelaFuncionario.getColumnModel().getColumn(0).setPreferredWidth(40);
+            tabelaFuncionario.getColumnModel().getColumn(0).setMaxWidth(40);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -100,6 +117,10 @@ public class FuncionarioView extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+
+
+
 
     public void preencherTabela() throws ClassNotFoundException {
         FuncionarioDao funcionarioDao = new DaoFactory().createFuncionarioDao();
