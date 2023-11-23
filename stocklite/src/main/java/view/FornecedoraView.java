@@ -57,8 +57,6 @@ public class FornecedoraView extends javax.swing.JFrame {
     private void formatar() throws ParseException {
         MaskFormatter mascaraCNPJ = new MaskFormatter("##.###.###/####-##");
         mascaraCNPJ.setPlaceholderCharacter('_');
-        MaskFormatter mascaraTelefone = new MaskFormatter("(##)#########");
-        jFormattedTextFieldTelefone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mascaraTelefone));
         jFormattedTextFieldCNPJ.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mascaraCNPJ));
     }
 
